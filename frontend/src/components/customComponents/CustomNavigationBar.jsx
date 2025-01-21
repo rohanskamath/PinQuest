@@ -14,7 +14,7 @@ import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    
+
     backgroundColor: 'rgba(206, 207, 216, 0.9)',
     '&:hover': {
         backgroundColor: 'rgba(206, 207, 216, 0.9)',
@@ -40,7 +40,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'black',
     width: '100%',
-    fontFamily:"'Merriweather', serif",
+    fontFamily: "'Merriweather', serif",
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
@@ -69,14 +69,14 @@ const CustomNavigationBar = () => {
     return (
         <>
             <Box sx={{ flexGrow: 1 }}>
-                <AppBar position="static" sx={{ backgroundColor: "#bec2da" }}>
+                <AppBar position="static" sx={{ backgroundColor: "#660033" }}>
                     <Toolbar>
-                        <CustomTypography color="black" sx={{ flexGrow: 1, fontSize: '24px', margin: '0 10px 0 0' }}>
+                        <CustomTypography color="white" sx={{ flexGrow: 1, fontSize: '24px', margin: '0 10px 0 0' }}>
                             Nearify
                         </CustomTypography>
                         <Search sx={{ display: { xs: 'none', sm: 'block' }, margin: '0 10px 0 0' }}>
                             <SearchIconWrapper>
-                                <SearchIcon sx={{ color: 'black'}}/>
+                                <SearchIcon sx={{ color: 'black' }} />
                             </SearchIconWrapper>
                             <StyledInputBase
                                 placeholder="Search location...."
@@ -90,7 +90,7 @@ const CustomNavigationBar = () => {
                                 aria-haspopup="true"
                                 color="inherit"
                                 onClick={handleProfileMenuOpen}>
-                                <AccountCircleSharpIcon sx={{ color: "black", fontSize: "30px" }} />
+                                <AccountCircleSharpIcon sx={{ color: "white", fontSize: "30px" }} />
                             </IconButton>
                             <Menu
                                 id="menu-appbar"
@@ -106,9 +106,9 @@ const CustomNavigationBar = () => {
                                     horizontal: 'right',
                                 }}
                             >
-                                <MenuItem sx={{ fontFamily:"'Merriweather', serif"}} onClick={handleMenuClose}>Profile</MenuItem>
-                                <MenuItem sx={{ fontFamily:"'Merriweather', serif"}} onClick={handleMenuClose}>My Visits</MenuItem>
-                                <MenuItem sx={{ fontFamily:"'Merriweather', serif"}} onClick={handleMenuClose}>Logout</MenuItem>
+                                <MenuItem sx={{ fontFamily: "'Merriweather', serif" }} onClick={handleMenuClose}>Profile</MenuItem>
+                                <MenuItem sx={{ fontFamily: "'Merriweather', serif" }} onClick={handleMenuClose}>My Visits</MenuItem>
+                                <MenuItem sx={{ fontFamily: "'Merriweather', serif" }} onClick={handleMenuClose}>Logout</MenuItem>
                             </Menu>
                         </div>
                     </Toolbar>

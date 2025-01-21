@@ -52,5 +52,16 @@
     cursor: pointer;
     color: rgb(88, 109, 228);
 }
-  
+
+.map-wrap {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 65px);
+}
+
+.map {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
   
