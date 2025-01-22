@@ -9,7 +9,7 @@ const CustomSnackbar = ({ open, msg, severity = "info", onClose }) => {
             open={open}
             autoHideDuration={3000}
             onClose={onClose}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             key={SlideTransition}
         >
             <Alert onClose={onClose} severity={severity} sx={{ fontFamily: "'Merriweather', serif" }}>

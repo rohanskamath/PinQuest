@@ -7,6 +7,7 @@ const CustomMapBox = ({ location }) => {
     const map = useRef(null);
     const marker = useRef(null);
     const zoom = 16;
+
     maptilersdk.config.apiKey = process.env.REACT_APP_MAPTILER_API_KEY;
 
     useEffect(() => {
@@ -20,10 +21,13 @@ const CustomMapBox = ({ location }) => {
             });
 
             // Add a marker at the initial location
-            marker.current = new maptilersdk.Marker().setLngLat([location.lng, location.lat]).addTo(map.current);
+            marker.current = new maptilersdk.Marker()
+                .setLngLat([location.lng, location.lat])
+                .addTo(map.current);
         } else {
             // Update map center and marker position when location changes
             map.current.setCenter([location.lng, location.lat]);
+
             if (marker.current) {
                 marker.current.setLngLat([location.lng, location.lat]);
             }
@@ -31,8 +35,8 @@ const CustomMapBox = ({ location }) => {
     }, [location]);
 
     return (
-        <div className='map-wrap'>
-            <div ref={mapContainer} className='map' />
+        <div className="map-wrap">
+            <div ref={mapContainer} className="map" />
         </div>
     );
 };

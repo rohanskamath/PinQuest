@@ -54,7 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const CustomNavigationBar = () => {
+const CustomNavigationBar = ({ placeName }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
 
@@ -79,8 +79,10 @@ const CustomNavigationBar = () => {
                                 <SearchIcon sx={{ color: 'black' }} />
                             </SearchIconWrapper>
                             <StyledInputBase
+                                sx={{ fontSize: "12px" }}
                                 placeholder="Search location...."
                                 inputProps={{ 'aria-label': 'search' }}
+                                value={placeName || ""}
                             />
                         </Search>
                         <div>

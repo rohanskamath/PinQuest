@@ -8,7 +8,7 @@ const Main = () => {
     lat: 0,
     lng: 0,
   })
-  const placeName=''
+  const [placeName, setPlaceName] = useState(null);
 
   const successCallback = (position) => {
     setLocation({
@@ -23,17 +23,34 @@ const Main = () => {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(successCallback, errorCallback)
-      fetchLocationName(location.lat, location.lng)
-
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     } else {
-      console.log("Unable to fetch the location")
+      console.log("Geolocation is not supported by this browser.");
     }
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    const fetchPlaceName = async () => {
+      if (location.lat !== 0 && location.lng !== 0) {
+        try {
+          const features = await fetchLocationName(location.lat, location.lng);
+          if (features && features.length > 0) {
+            setPlaceName(features[0].place_name);
+          } else {
+            console.log("No place found for the given coordinates.");
+          }
+        } catch (error) {
+          console.error("Error fetching location name:", error);
+        }
+      }
+    }
+
+    fetchPlaceName()
+  }, [location])
 
   return (
     <>
-      <CustomNavigationBar />
+      <CustomNavigationBar placeName={placeName} />
       <CustomMapBox location={location} />
     </>
   );
