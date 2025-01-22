@@ -5,9 +5,9 @@ import "@maptiler/sdk/dist/maptiler-sdk.css";
 const CustomMapBox = ({ location }) => {
     const mapContainer = useRef(null);
     const map = useRef(null);
-    const marker = useRef(null); // For adding a marker
+    const marker = useRef(null);
     const zoom = 16;
-    maptilersdk.config.apiKey = 'VAYatajGEgbMpC217RqV';
+    maptilersdk.config.apiKey = process.env.REACT_APP_MAPTILER_API_KEY;
 
     useEffect(() => {
         if (!map.current) {
