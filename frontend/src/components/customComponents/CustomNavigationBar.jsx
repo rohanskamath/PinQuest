@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { IconButton } from '@mui/material';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -71,6 +72,7 @@ const CustomNavigationBar = ({ placeName }) => {
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="static" sx={{ backgroundColor: "#660033" }}>
                     <Toolbar>
+                        <span><MyLocationIcon sx={{ margin: '4px 5px 0 0', fontSize: '24px' }} /></span>
                         <CustomTypography color="white" sx={{ flexGrow: 1, fontSize: '24px', margin: '0 10px 0 0' }}>
                             Nearify
                         </CustomTypography>
