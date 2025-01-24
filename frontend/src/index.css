@@ -1,56 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
 
 .flip-open-animation {
-    animation: bookFlip 1s ease-in-out forwards;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  @keyframes bookFlip {
-    0% {
-      transform: translate(-50%, -50%) rotateY(0deg);
-    }
-    50% {
-      transform: translate(-50%, -50%) rotateY(90deg);
-      opacity: 0.5;
-    }
-    100% {
-      transform: translate(-50%, -50%) rotateY(180deg); 
-      opacity: 0;
-    }
-  }
-
-  .flip-close-animation {
-    animation: bookFlip 1s ease-in-out backwards;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  @keyframes bookFlip {
-    0% {
-      transform: translate(-50%, -50%) rotateY(0deg);
-    }
-    50% {
-      transform: translate(-50%, -50%) rotateY(90deg);
-      opacity: 0.5;
-    }
-    100% {
-      transform: translate(-50%, -50%) rotateY(180deg); 
-      opacity: 0;
-    }
-  }
-
-.flip-label{
-    color: rgb(9, 66, 255);
+  animation: bookFlip 1s ease-in-out forwards;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.flip-label:hover{
-    cursor: pointer;
-    color: rgb(88, 109, 228);
+@keyframes bookFlip {
+  0% {
+    transform: translate(-50%, -50%) rotateY(0deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotateY(90deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotateY(180deg);
+    opacity: 0;
+  }
+}
+
+.flip-close-animation {
+  animation: bookFlip 1s ease-in-out backwards;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes bookFlip {
+  0% {
+    transform: translate(-50%, -50%) rotateY(0deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotateY(90deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotateY(180deg);
+    opacity: 0;
+  }
+}
+
+.flip-label {
+  color: rgb(9, 66, 255);
+}
+
+.flip-label:hover {
+  cursor: pointer;
+  color: rgb(88, 109, 228);
 }
 
 .map-wrap {
@@ -64,4 +64,3 @@
   width: 100%;
   height: 100%;
 }
-  

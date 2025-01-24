@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import CustomNavigationBar from '../../components/customComponents/CustomNavigationBar';
 import CustomMapBox from '../../components/customComponents/CustomMapBox';
 import { fetchLocationName } from '../../services/locationService';
+import { setLocation, setPlaceName } from '../../redux/slices/locationSlice';
 
 const Main = () => {
-  const [location, setLocation] = useState({
-    lat: 0,
-    lng: 0,
-  })
-  const [placeName, setPlaceName] = useState(null);
+  const dispatch = useDispatch();
+
+  const location = useSelector((state) => state.location.location)
+  const placeName = useSelector((state) => state.location.placeName)
 
   const successCallback = (position) => {
-    setLocation({
+    const newLocation = {
       lat: position.coords.latitude,
       lng: position.coords.longitude
-    })
+    }
+    dispatch(setLocation(newLocation))
   }
 
   const errorCallback = () => {
@@ -35,7 +37,7 @@ const Main = () => {
         try {
           const features = await fetchLocationName(location.lat, location.lng);
           if (features && features.length > 0) {
-            setPlaceName(features[0].place_name);
+            dispatch(setPlaceName(features[0].place_name));
           } else {
             console.log("No place found for the given coordinates.");
           }
@@ -46,7 +48,7 @@ const Main = () => {
     }
 
     fetchPlaceName()
-  }, [location])
+  }, [location, dispatch])
 
   return (
     <>

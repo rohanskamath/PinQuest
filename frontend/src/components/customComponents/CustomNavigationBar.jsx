@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,9 +8,12 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { IconButton } from '@mui/material';
+import { IconButton, List, ListItem, ListItemText } from '@mui/material';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import { searchLocation } from '../../services/locationService';
+import { useDispatch } from 'react-redux';
+import { setLocation, setPlaceName } from '../../redux/slices/locationSlice';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -47,16 +50,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
         [theme.breakpoints.up('sm')]: {
-            width: '20ch',
+            width: '30ch',
             '&:focus': {
-                width: '26ch',
+                width: '36ch',
             },
         },
     },
 }));
 
 const CustomNavigationBar = ({ placeName }) => {
+    const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
+    const [searchQuery, setSearchQuery] = useState(placeName)
+    const [suggestions, setSuggestions] = useState([])
     const isMenuOpen = Boolean(anchorEl);
 
     const handleProfileMenuOpen = (event) => {
@@ -67,6 +73,40 @@ const CustomNavigationBar = ({ placeName }) => {
         setAnchorEl(null);
     };
 
+    // Set default search query based on placeName
+    useEffect(() => {
+        if (placeName) {
+            setSearchQuery(placeName);
+        }
+    }, [placeName]);
+
+
+    const handleSearchQuery = async (e) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+        if (query.length > 2) {
+            try {
+                const res = await searchLocation(query);
+                setSuggestions(res.features || [])
+            }
+            catch (err) {
+                console.log('Error fetching search suggestions:', err);
+            }
+        } else {
+            setSuggestions([])
+        }
+    }
+
+    const handleSuggestionClick = (suggestion) => {
+        setSearchQuery(suggestion.place_name);
+        setSuggestions([]);
+        dispatch(setLocation({
+            lat: suggestion.geometry.coordinates[1],
+            lng: suggestion.geometry.coordinates[0],
+        }))
+        dispatch(setPlaceName(suggestion.place_name))
+    };
+
     return (
         <>
             <Box sx={{ flexGrow: 1 }}>
@@ -74,7 +114,7 @@ const CustomNavigationBar = ({ placeName }) => {
                     <Toolbar>
                         <span><MyLocationIcon sx={{ margin: '4px 5px 0 0', fontSize: '24px' }} /></span>
                         <CustomTypography color="white" sx={{ flexGrow: 1, fontSize: '24px', margin: '0 10px 0 0' }}>
-                            Nearify
+                            PinQuest
                         </CustomTypography>
                         <Search sx={{ display: { xs: 'none', sm: 'block' }, margin: '0 10px 0 0' }}>
                             <SearchIconWrapper>
@@ -84,8 +124,33 @@ const CustomNavigationBar = ({ placeName }) => {
                                 sx={{ fontSize: "12px" }}
                                 placeholder="Search location...."
                                 inputProps={{ 'aria-label': 'search' }}
-                                value={placeName || ""}
+                                value={searchQuery || ""}
+                                onChange={handleSearchQuery}
                             />
+                            {suggestions.length > 0 && (
+                                <List
+                                    sx={{
+                                        position: 'absolute',
+                                        zIndex: 10,
+                                        color: 'black',
+                                        backgroundColor: 'white',
+                                        maxHeight: '200px',
+                                        overflowY: 'auto',
+                                        width: '100%',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    {suggestions.map((suggestion, index) => (
+                                        <ListItem
+                                            button={true}
+                                            key={index}
+                                            onClick={() => handleSuggestionClick(suggestion)}
+                                        >
+                                            <ListItemText primary={suggestion.place_name} />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            )}
                         </Search>
                         <div>
                             <IconButton
