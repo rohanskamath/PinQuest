@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
+import CustomModal from './CustomModal'
 
 const CustomMapBox = ({ location }) => {
     const mapContainer = useRef(null);
     const map = useRef(null);
     const marker = useRef(null);
     const zoom = 16;
+    const [open, setOpen] = useState(false)
+    const [anchorPosition, setAnchorPosition] = useState(null);
 
     maptilersdk.config.apiKey = process.env.REACT_APP_MAPTILER_API_KEY;
 
@@ -24,6 +27,10 @@ const CustomMapBox = ({ location }) => {
             marker.current = new maptilersdk.Marker()
                 .setLngLat([location.lng, location.lat])
                 .addTo(map.current);
+
+            const markerElement = marker.current.getElement();
+            markerElement.addEventListener('click', handleOpen);
+
         } else {
             // Update map center and marker position when location changes
             map.current.setCenter([location.lng, location.lat]);
@@ -34,10 +41,33 @@ const CustomMapBox = ({ location }) => {
         }
     }, [location]);
 
+    const handleOpen = event => {
+        if (marker.current) {
+            const markerElement = marker.current.getElement();
+            if (markerElement) {
+                const rect = markerElement.getBoundingClientRect();
+                setAnchorPosition({
+                    top: rect.top,
+                    left: rect.right
+                });
+                setOpen(true);
+            }
+        }
+    }
+
     return (
-        <div className="map-wrap">
-            <div ref={mapContainer} className="map" />
-        </div>
+        <>
+            <div className="map-wrap">
+                <div ref={mapContainer} className="map" />
+            </div>
+            {anchorPosition && (
+                <CustomModal
+                    open={open}
+                    setOpen={setOpen}
+                    anchorPosition={{ top: anchorPosition.top, left: anchorPosition.left }}
+                />
+            )}
+        </>
     );
 };
 

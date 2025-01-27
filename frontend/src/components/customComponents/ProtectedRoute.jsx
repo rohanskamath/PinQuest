@@ -27,14 +27,20 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     checkToken();
+
+    const intervalId = setInterval(() => {
+      checkToken();
+    }, 5000)
+
+    return () => clearInterval(intervalId)
   }, []);
 
   if (loading) {
     return (
       <>
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        <ClipLoader color="#4A90E2" loading={loading} size={50} />
-      </div>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+          <ClipLoader color="#4A90E2" loading={loading} size={50} />
+        </div>
       </>
     );
   }
@@ -43,7 +49,7 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" />;
   }
 
-  return children; 
+  return children;
 };
 
 export default ProtectedRoute;
