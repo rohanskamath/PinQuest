@@ -1,10 +1,10 @@
 import React from 'react'
 import Popover from '@mui/material/Popover';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
 import CustomTypography from '../customFormControls/CustomTypography';
 import { Box } from '@mui/material';
 
-const CustomModal = ({ open, setOpen, anchorPosition }) => {
+const CustomModal = ({ open, setOpen, anchorPosition, pins }) => {
 
     const handleClose = () => {
         setOpen(false);
@@ -24,7 +24,7 @@ const CustomModal = ({ open, setOpen, anchorPosition }) => {
                 <div className='card'>
                     <Box sx={{ display: "flex" }}>
                         <CustomTypography sx={{ fontSize: "15px", color: "red", fontWeight: "bold" }} marginTop='0px'>Place name:&nbsp;</CustomTypography>
-                        <CustomTypography sx={{ fontSize: "15px" }} marginTop='0px'>Sigma Park</CustomTypography>
+                        <CustomTypography sx={{ fontSize: "15px" }} marginTop='0px'></CustomTypography>
                     </Box>
                     <CustomTypography sx={{ fontSize: "15px", color: "red", fontWeight: "bold" }} marginTop='0px'>Review</CustomTypography>
                     <div className='placeholder'>
@@ -32,11 +32,11 @@ const CustomModal = ({ open, setOpen, anchorPosition }) => {
                     </div>
                     <CustomTypography sx={{ fontSize: "15px", color: "red", fontWeight: "bold" }} marginTop='0px'>Ratings</CustomTypography>
                     <div className='stars'>
-                        <StarBorderIcon />
-                        <StarBorderIcon />
-                        <StarBorderIcon />
-                        <StarBorderIcon />
-                        <StarBorderIcon />
+                        <StarIcon />
+                        <StarIcon />
+                        <StarIcon />
+                        <StarIcon />
+                        <StarIcon />
                     </div>
                     <CustomTypography sx={{ fontSize: "15px", color: "red", fontWeight: "bold" }} marginTop='0px'>Created by</CustomTypography>
                     <Box sx={{ display: "flex" }}>
