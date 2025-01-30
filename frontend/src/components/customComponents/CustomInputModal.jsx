@@ -3,7 +3,7 @@ import Popover from '@mui/material/Popover';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import PushPinIcon from '@mui/icons-material/PushPin';
-import { Box } from '@mui/material';
+import { Box, InputLabel, MenuItem, FormControl, Select, Rating } from '@mui/material';
 import CustomTypography from '../customFormControls/CustomTypography';
 import CustomTextField from '../customFormControls/CustomTextField';
 import CustomButton from '../customFormControls/CustomButton';
@@ -13,6 +13,24 @@ const CustomInputModal = ({ open, setOpen, anchorPosition }) => {
         setOpen(false);
     };
     const [rating, setRating] = useState(0);
+    const categories = [
+        {
+            name: "Restaurants",
+            value: 1
+        },
+        {
+            name: "Lodge",
+            value: 2
+        },
+        {
+            name: "Hospital",
+            value: 3
+        },
+        {
+            name: "Others",
+            value: 4
+        }
+    ];
     const id = open ? 'custom-popover' : undefined;
 
     return (
@@ -37,6 +55,26 @@ const CustomInputModal = ({ open, setOpen, anchorPosition }) => {
                     icon={<PushPinIcon />}
                 />
 
+                <FormControl size="small" >
+                    <InputLabel id="demo-simple-select-label" sx={{ fontFamily: "'Merriweather', serif", fontSize: "12px" }}>Select Category</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Select Category"
+                        sx={{ fontFamily: "'Merriweather', serif", fontSize: "12px" }}
+                    >
+                        {
+                            categories.map((category, index) => {
+                                return (
+                                    <>
+                                        <MenuItem key={index} value={category.value} sx={{ fontFamily: "'Merriweather', serif", fontSize: "12px" }}>{category.name}</MenuItem>
+                                    </>
+                                )
+                            })
+                        }
+                    </Select>
+                </FormControl>
+
                 {/* Review Input */}
                 <CustomTextField
                     sx={{
@@ -51,7 +89,7 @@ const CustomInputModal = ({ open, setOpen, anchorPosition }) => {
                     autoComplete="off"
                     label={"Enter your review here"}
                     multiline
-                    rows={3}
+                    rows={2}
                 />
 
                 {/* Ratings Section */}
@@ -60,20 +98,20 @@ const CustomInputModal = ({ open, setOpen, anchorPosition }) => {
                         Rate your place
                     </CustomTypography>
                     <Box sx={{ display: "flex", gap: 0.5 }}>
-                        {[...Array(5)].map((_, index) => (
-                            <Box key={index} onClick={() => setRating(index + 1)} sx={{ cursor: "pointer" }}>
-                                {index < rating ? (
-                                    <StarIcon sx={{ color: "#FFD700" }} />
-                                ) : (
-                                    <StarBorderIcon sx={{ color: "#FFD700" }} />
-                                )}
-                            </Box>
-                        ))}
+                        <Rating
+                            name="simple-controlled"
+                            value={rating}
+                            onChange={(e, newValue) => {
+                                setRating(newValue);
+                            }}
+                        />
                     </Box>
                 </Box>
-                <CustomButton sx={{ '& .MuiTypography-root':{
-                    fontSize:"12px"
-                } }}>
+                <CustomButton sx={{
+                    '& .MuiTypography-root': {
+                        fontSize: "12px"
+                    }
+                }}>
                     Submit review
                 </CustomButton>
             </Box>

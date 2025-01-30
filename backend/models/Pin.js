@@ -5,10 +5,10 @@ const User = require("./User");
 const PinSchema = sequelize.define(
   "Pin",
   {
-    id:{
-      type:DataTypes.INTEGER,
-      autoIncrement:true,
-      primaryKey:true
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     email: {
       type: DataTypes.STRING,
@@ -19,6 +19,13 @@ const PinSchema = sequelize.define(
       },
     },
     title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [3],
+      },
+    },
+    category: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {

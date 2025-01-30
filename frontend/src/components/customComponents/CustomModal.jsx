@@ -45,14 +45,18 @@ const CustomModal = ({ open, setOpen, anchorPosition, pin }) => {
                         >
                             <div className='card'>
                                 <Box sx={{ display: "flex" }}>
-                                    <CustomTypography sx={{ fontSize: "15px", color: "red", fontWeight: "bold" }} marginTop='0px'>Place name:&nbsp;</CustomTypography>
-                                    <CustomTypography sx={{ fontSize: "15px" }} marginTop='0px'>{pin?.title}</CustomTypography>
+                                    <CustomTypography sx={{ fontSize: "12px", color: "red", fontWeight: "bold" }} marginTop='0px'>Place name:&nbsp;</CustomTypography>
+                                    <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{pin?.title}</CustomTypography>
                                 </Box>
-                                <CustomTypography sx={{ fontSize: "15px", color: "red", fontWeight: "bold" }} marginTop='0px'>Review</CustomTypography>
+                                <Box sx={{ display: "flex" }}>
+                                    <CustomTypography sx={{ fontSize: "12px", color: "red", fontWeight: "bold" }} marginTop='0px'>Category:&nbsp;</CustomTypography>
+                                    <CustomTypography sx={{ fontSize: "12px", textTransform: "capitalize" }} marginTop='0px'>{pin?.category}</CustomTypography>
+                                </Box>
+                                <CustomTypography sx={{ fontSize: "12px", color: "red", fontWeight: "bold" }} marginTop='0px'>Review</CustomTypography>
                                 <div className='placeholder'>
                                     <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{pin?.desc}</CustomTypography>
                                 </div>
-                                <CustomTypography sx={{ fontSize: "15px", color: "red", fontWeight: "bold" }} marginTop='0px'>Ratings</CustomTypography>
+                                <CustomTypography sx={{ fontSize: "12px", color: "red", fontWeight: "bold" }} marginTop='0px'>Ratings</CustomTypography>
                                 <div className='stars'>
                                     {
                                         [...Array(5)].map((_, index) => {

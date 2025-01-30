@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import CustomNavigationBar from '../../components/customComponents/CustomNavigationBar';
 import CustomMapBox from '../../components/customComponents/CustomMapBox';
@@ -7,8 +7,7 @@ import { setLocation, setPlaceName } from '../../redux/slices/locationSlice';
 
 const Main = () => {
   const dispatch = useDispatch();
-  
-  const [curretPlace, setCurrentPlace] = useState(null)
+
   const location = useSelector((state) => state.location.location)
   const placeName = useSelector((state) => state.location.placeName)
 
