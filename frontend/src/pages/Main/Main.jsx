@@ -4,12 +4,10 @@ import CustomNavigationBar from '../../components/customComponents/CustomNavigat
 import CustomMapBox from '../../components/customComponents/CustomMapBox';
 import { fetchLocationName } from '../../services/locationService';
 import { setLocation, setPlaceName } from '../../redux/slices/locationSlice';
-import { getAllPins } from '../../services/pinService';
 
 const Main = () => {
   const dispatch = useDispatch();
-
-  const [pins, setPins] = useState();
+  
   const [curretPlace, setCurrentPlace] = useState(null)
   const location = useSelector((state) => state.location.location)
   const placeName = useSelector((state) => state.location.placeName)
@@ -24,15 +22,6 @@ const Main = () => {
 
   const errorCallback = () => {
     console.log("Unable to fetch the location")
-  }
-
-  const fetchPins = async () => {
-    try {
-      const pins = await getAllPins();
-      setPins(pins.data)
-    } catch (err) {
-      console.log("unable to fetech pins")
-    }
   }
 
   useEffect(() => {
@@ -62,14 +51,10 @@ const Main = () => {
     fetchPlaceName()
   }, [location, dispatch])
 
-  useEffect(() => {
-    fetchPins()
-  }, [])
-
   return (
     <>
       <CustomNavigationBar placeName={placeName} />
-      <CustomMapBox location={location} pins={pins} />
+      <CustomMapBox location={location} />
     </>
   );
 }

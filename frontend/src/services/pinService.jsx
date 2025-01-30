@@ -4,7 +4,6 @@ import appClient from './appClient'
 export const getAllPins = async () => {
     try {
         const res = await appClient.get('/pins');
-        console.log(res.data)
         return res.data;
 
     } catch (error) {

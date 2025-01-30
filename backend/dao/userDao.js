@@ -16,6 +16,7 @@ const signUp = async (data) => {
     const userData = await User.create({
       email: data.email,
       fullName: data.fullName,
+      userName: data.userName,
       password: encryptedPassword,
     });
     userData.password = undefined;
@@ -40,7 +41,7 @@ const logIn = async (data) => {
 
       // Generating Token
       const token = jwt.sign(
-        { email: existingUser.email, fullName: existingUser.fullName },
+        { email: existingUser.email, fullName: existingUser.fullName, userName: existingUser.userName },
         process.env.JWT_SECRET,
         {
           expiresIn: "1d",

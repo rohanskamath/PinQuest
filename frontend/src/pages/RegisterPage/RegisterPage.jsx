@@ -13,7 +13,7 @@ import EnhancedEncryptionOutlinedIcon from '@mui/icons-material/EnhancedEncrypti
 import { useNavigate } from 'react-router-dom';
 import CustomStyledBox from '../../components/customComponents/CustomStyledBox';
 import CustomButton from '../../components/customFormControls/CustomButton';
-import { registerUser } from '../../services/authService';
+import { registerUser, createUserName } from '../../services/authService';
 import CustomSnackbar from '../../components/customComponents/CustomSnackbar';
 
 const RegisterPage = () => {
@@ -68,8 +68,10 @@ const RegisterPage = () => {
       const data = {
         email: registerData.email,
         fullName: registerData.fullName,
+        userName: createUserName(registerData.email),
         password: registerData.password
       }
+      console.log(data)
       // POST-API Called on Button Click
       try {
         const res = await registerUser(data)
