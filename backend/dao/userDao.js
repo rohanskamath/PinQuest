@@ -23,7 +23,7 @@ const signUp = async (data) => {
 
     return userData;
   } catch (err) {
-    throw new Error(err.message);
+    throw new Error("Something went wrong!");
   }
 };
 

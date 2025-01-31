@@ -16,6 +16,7 @@
     "axios": "^1.7.9",
     "eslint-config-react-app": "^7.0.1",
     "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "lottie-react": "^2.4.0",
     "lottie-web": "^5.12.2",

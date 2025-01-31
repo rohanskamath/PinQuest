@@ -1,37 +1,62 @@
 import React, { useState } from 'react';
 import Popover from '@mui/material/Popover';
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import { Box, InputLabel, MenuItem, FormControl, Select, Rating } from '@mui/material';
 import CustomTypography from '../customFormControls/CustomTypography';
 import CustomTextField from '../customFormControls/CustomTextField';
 import CustomButton from '../customFormControls/CustomButton';
+import { useSelector } from 'react-redux';
+import CustomSnackbar from './CustomSnackbar';
+import { addNewPin } from '../../services/pinService';
 
-const CustomInputModal = ({ open, setOpen, anchorPosition }) => {
+const CustomInputModal = ({ open, setOpen, anchorPosition, callbackPins }) => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const [placeName, setPlaceName] = useState('')
+    const [selectedCategory, setSelectedCategory] = useState('')
+    const [review, setReview] = useState('')
     const [rating, setRating] = useState(0);
-    const categories = [
-        {
-            name: "Restaurants",
-            value: 1
-        },
-        {
-            name: "Lodge",
-            value: 2
-        },
-        {
-            name: "Hospital",
-            value: 3
-        },
-        {
-            name: "Others",
-            value: 4
-        }
-    ];
+    const location = useSelector((state) => state.location.location)
+    const userInfo = useSelector((state) => state.user.user)
+    const [snackbar, setSnackbar] = useState({ open: false, msg: '', severity: 'success' });
+
     const id = open ? 'custom-popover' : undefined;
+
+
+    const handleSubmitReview = async () => {
+
+        if (!placeName || !selectedCategory || !review || rating === 0) {
+            setSnackbar({ open: true, msg: "All Fields are mandatory!", severity: 'error' });
+            return;
+        }
+        const data = {
+            title: placeName,
+            desc: review,
+            category: selectedCategory,
+            rating: rating,
+            lat: location.lat,
+            long: location.lng,
+            email: userInfo.email
+        }
+        try {
+            const res = await addNewPin(data);
+            setSnackbar({ open: true, msg: res.message, severity: 'success' });
+            handleClose();
+        }
+        catch (err) {
+            setSnackbar({ open: true, msg: err, severity: 'error' });
+            console.error("Unable to fetch pins:", err);
+        } finally {
+            callbackPins();
+        }
+
+    }
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, open: false });
+    };
 
     return (
         <Popover
@@ -52,26 +77,26 @@ const CustomInputModal = ({ open, setOpen, anchorPosition }) => {
                     autoComplete="off"
                     label={"Enter place name"}
                     autoFocus
+                    value={placeName}
+                    onChange={(e) => setPlaceName(e.target.value)}
                     icon={<PushPinIcon />}
                 />
 
+                {/* Category Selection */}
                 <FormControl size="small" >
                     <InputLabel id="demo-simple-select-label" sx={{ fontFamily: "'Merriweather', serif", fontSize: "12px" }}>Select Category</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         label="Select Category"
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
                         sx={{ fontFamily: "'Merriweather', serif", fontSize: "12px" }}
                     >
-                        {
-                            categories.map((category, index) => {
-                                return (
-                                    <>
-                                        <MenuItem key={index} value={category.value} sx={{ fontFamily: "'Merriweather', serif", fontSize: "12px" }}>{category.name}</MenuItem>
-                                    </>
-                                )
-                            })
-                        }
+                        <MenuItem value="restaurant" sx={{ fontFamily: "'Merriweather', serif", fontSize: "12px" }} >Restaurants</MenuItem>
+                        <MenuItem value="lodge" sx={{ fontFamily: "'Merriweather', serif", fontSize: "12px" }}>Lodge</MenuItem>
+                        <MenuItem value="hospital" sx={{ fontFamily: "'Merriweather', serif", fontSize: "12px" }}>Hospital</MenuItem>
+                        <MenuItem value="others" sx={{ fontFamily: "'Merriweather', serif", fontSize: "12px" }}>Others</MenuItem>
                     </Select>
                 </FormControl>
 
@@ -88,6 +113,8 @@ const CustomInputModal = ({ open, setOpen, anchorPosition }) => {
                     }}
                     autoComplete="off"
                     label={"Enter your review here"}
+                    value={review}
+                    onChange={(e) => setReview(e.target.value)}
                     multiline
                     rows={2}
                 />
@@ -107,14 +134,24 @@ const CustomInputModal = ({ open, setOpen, anchorPosition }) => {
                         />
                     </Box>
                 </Box>
-                <CustomButton sx={{
-                    '& .MuiTypography-root': {
-                        fontSize: "12px"
-                    }
-                }}>
+                <CustomButton
+                    sx={{
+                        '& .MuiTypography-root': {
+                            fontSize: "12px"
+                        }
+                    }}
+                    onClick={handleSubmitReview}
+                >
                     Submit review
                 </CustomButton>
             </Box>
+            {/* Custom Snackbar to display messages */}
+            <CustomSnackbar
+                open={snackbar.open}
+                onClose={handleCloseSnackbar}
+                severity={snackbar.severity}
+                msg={snackbar.msg}
+            />
         </Popover>
     );
 };

@@ -4,6 +4,7 @@ import CustomNavigationBar from '../../components/customComponents/CustomNavigat
 import CustomMapBox from '../../components/customComponents/CustomMapBox';
 import { fetchLocationName } from '../../services/locationService';
 import { setLocation, setPlaceName } from '../../redux/slices/locationSlice';
+import CustomFooter from '../../components/customComponents/CustomFooter';
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ const Main = () => {
     <>
       <CustomNavigationBar placeName={placeName} />
       <CustomMapBox location={location} />
+      <CustomFooter />
     </>
   );
 }

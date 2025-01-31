@@ -4,7 +4,11 @@ const pinDao = require("../dao/pinDao");
 const createPin = async (req, res) => {
   try {
     const newPin = await pinDao.createPinDao(req.body);
-    res.status(200).json(newPin);
+    res.status(200).json({
+      sucess: true,
+      message: "Pin added sucessfully!",
+      data: newPin,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -14,7 +18,11 @@ const createPin = async (req, res) => {
 const getAllPins = async (req, res) => {
   try {
     const pins = await pinDao.getAllPinsDao();
-    res.status(200).json(pins);
+    res.status(200).json({
+      sucess: true,
+      message: "Pins Fetched sucessfully!",
+      data: pins,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

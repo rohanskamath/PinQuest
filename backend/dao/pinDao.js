@@ -5,7 +5,7 @@ const createPinDao = async (data) => {
     const newPin = await Pin.create(data);
     return newPin;
   } catch (err) {
-    throw new Error(`Error while adding pin: ${err.message}`);
+    throw new Error('Something went wrong!');
   }
 };
 
@@ -14,7 +14,7 @@ const getAllPinsDao = async () => {
     const fetchAllPins = await Pin.findAll();
     return fetchAllPins;
   } catch (err) {
-    throw new Error(`Error while fetching pin: ${err.message}`);
+    throw new Error('Something went wrong!');
   }
 };
 
