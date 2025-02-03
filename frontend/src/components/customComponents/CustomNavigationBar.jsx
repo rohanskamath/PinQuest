@@ -5,6 +5,9 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Cookies from "js-cookie";
 import InputBase from '@mui/material/InputBase';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
+import LogoutIcon from '@mui/icons-material/Logout';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
@@ -14,6 +17,7 @@ import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { useDispatch } from 'react-redux';
 import CustomTypography from '../../components/customFormControls/CustomTypography';
 import CustomSnackbar from './CustomSnackbar';
+import CustomUserModal from './CustomUserModal';
 import { searchLocation } from '../../services/locationService';
 import { setLocation, setPlaceName } from '../../redux/slices/locationSlice';
 import { clearUserData } from '../../redux/slices/userSlice'
@@ -66,6 +70,7 @@ const CustomNavigationBar = ({ placeName }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [searchQuery, setSearchQuery] = useState(placeName)
     const [suggestions, setSuggestions] = useState([])
+    const [open, setOpen] = React.useState(false);
     const isMenuOpen = Boolean(anchorEl);
     const [snackbar, setSnackbar] = useState({ open: false, msg: '', severity: 'success' });
 
@@ -120,6 +125,10 @@ const CustomNavigationBar = ({ placeName }) => {
         Cookies.remove("token");
         dispatch(clearUserData());
         handleMenuClose();
+    }
+
+    const handleOpen = () => {
+        setOpen(true)
     }
 
     return (
@@ -190,14 +199,17 @@ const CustomNavigationBar = ({ placeName }) => {
                                     horizontal: 'right',
                                 }}
                             >
-                                <MenuItem sx={{ fontFamily: "'Merriweather', serif" }} onClick={handleMenuClose}>Profile</MenuItem>
-                                <MenuItem sx={{ fontFamily: "'Merriweather', serif" }} onClick={handleMenuClose}>My Visits</MenuItem>
-                                <MenuItem sx={{ fontFamily: "'Merriweather', serif" }} onClick={handleLogout}>Logout</MenuItem>
+                                <MenuItem sx={{ fontFamily: "'Merriweather', serif", fontSize:"14px" }} onClick={handleOpen}><AccountCircleIcon />&nbsp;Profile</MenuItem>
+                                <MenuItem sx={{ fontFamily: "'Merriweather', serif", fontSize:"14px"  }} onClick={handleMenuClose}><LocationSearchingIcon />&nbsp;My Visits</MenuItem>
+                                <MenuItem sx={{ fontFamily: "'Merriweather', serif", fontSize:"14px"  }} onClick={handleLogout}><LogoutIcon />&nbsp;Logout</MenuItem>
                             </Menu>
                         </div>
                     </Toolbar>
                 </AppBar>
             </Box>
+            {
+                open && <CustomUserModal open={open} setOpen={setOpen} />
+            }
             {/* Custom Snackbar to display messages */}
             <CustomSnackbar
                 open={snackbar.open}

@@ -5,7 +5,7 @@ import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
 import CustomTypography from '../customFormControls/CustomTypography';
 import { createUserName } from '../../services/authService';
 
-const CustomModal = ({ open, setOpen, anchorPosition, pin }) => {
+const CustomReviewModal = ({ open, setOpen, anchorPosition, pin }) => {
 
     const handleClose = () => {
         setOpen(false);
@@ -118,4 +118,4 @@ const CustomModal = ({ open, setOpen, anchorPosition, pin }) => {
 }
 
 
-export default CustomModal
+export default CustomReviewModal

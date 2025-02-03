@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
-import CustomModal from './CustomModal'
+import CustomReviewModal from './CustomReviewModal'
 import CustomInputModal from './CustomInputModal';
 import { getAllPins } from '../../services/pinService'
 import CustomSnackbar from './CustomSnackbar';
@@ -200,7 +200,7 @@ const CustomMapBox = ({ location }) => {
                 <div ref={mapContainer} className="map" />
             </div>
             {anchorPosition && showReviewModal && (
-                <CustomModal
+                <CustomReviewModal
                     pin={selectedPin}
                     open={showReviewModal}
                     setOpen={setShowReviewModal}
