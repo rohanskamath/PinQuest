@@ -52,15 +52,11 @@ const CustomModal = ({ open, setOpen, anchorPosition, pin }) => {
                                     <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{pin?.title}</CustomTypography>
                                 </Box>
                                 <Box sx={{ display: "flex" }}>
-                                    <CustomTypography sx={{ fontSize: "12px", color: "#660033", fontWeight: "bold" }} marginTop='0px'>Category:&nbsp;</CustomTypography>
-                                    <CustomTypography sx={{ fontSize: "12px", textTransform: "capitalize" }} marginTop='0px'>{pin?.category}</CustomTypography>
-                                </Box>
-                                <Box sx={{ display: "flex" }}>
                                     <CustomTypography sx={{ fontSize: "12px", color: "#660033", fontWeight: "bold" }} marginTop='0px'>Ratings:&nbsp;</CustomTypography>
                                     <Box
                                         sx={{
-                                            backgroundColor: pin?.avgrating >= 4 ? "green" :
-                                                pin?.avgrating === 3 ? "yellow" :
+                                            backgroundColor: parseInt(pin?.avgRating) >= 4 ? "green" :
+                                                parseInt(pin?.avgRating) === 3 ? "gold" :
                                                     "red",
                                             padding: "0 10px",
                                             borderRadius: "5px"
@@ -82,6 +78,7 @@ const CustomModal = ({ open, setOpen, anchorPosition, pin }) => {
                                                 <Stack key={index}>
                                                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                                                         <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{createUserName(review?.email)}</CustomTypography>
+                                                        <CustomTypography sx={{ fontSize: "12px", fontWeight: "bold" }} marginTop='0px'>{review?.category}</CustomTypography>
                                                         <Box
                                                             sx={{
                                                                 backgroundColor: review?.rating >= 4 ? "green" :

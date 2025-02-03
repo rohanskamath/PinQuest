@@ -43,7 +43,7 @@ const RegisterPage = () => {
 
     if (!registerData.password.trim()) {
       newErrors.password = "* Password is required";
-    } else if (registerData.password.length <= 8) {
+    } else if (registerData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
     } else if (!/^[a-zA-Z0-9]+$/.test(registerData.password)) {
       newErrors.password = "Password must be alphanumeric";

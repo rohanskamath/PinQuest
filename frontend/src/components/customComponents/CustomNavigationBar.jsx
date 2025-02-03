@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import CustomTypography from '../../components/customFormControls/CustomTypography';
+import Cookies from "js-cookie";
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,9 +11,12 @@ import Menu from '@mui/material/Menu';
 import { IconButton, List, ListItem, ListItemText } from '@mui/material';
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
-import { searchLocation } from '../../services/locationService';
 import { useDispatch } from 'react-redux';
+import CustomTypography from '../../components/customFormControls/CustomTypography';
+import CustomSnackbar from './CustomSnackbar';
+import { searchLocation } from '../../services/locationService';
 import { setLocation, setPlaceName } from '../../redux/slices/locationSlice';
+import { clearUserData } from '../../redux/slices/userSlice'
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -64,6 +67,7 @@ const CustomNavigationBar = ({ placeName }) => {
     const [searchQuery, setSearchQuery] = useState(placeName)
     const [suggestions, setSuggestions] = useState([])
     const isMenuOpen = Boolean(anchorEl);
+    const [snackbar, setSnackbar] = useState({ open: false, msg: '', severity: 'success' });
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -106,6 +110,17 @@ const CustomNavigationBar = ({ placeName }) => {
         }))
         dispatch(setPlaceName(suggestion.place_name))
     };
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, open: false });
+    };
+
+    const handleLogout = () => {
+        setSnackbar({ open: true, msg: 'Logging out', severity: 'success' });
+        Cookies.remove("token");
+        dispatch(clearUserData());
+        handleMenuClose();
+    }
 
     return (
         <>
@@ -177,12 +192,19 @@ const CustomNavigationBar = ({ placeName }) => {
                             >
                                 <MenuItem sx={{ fontFamily: "'Merriweather', serif" }} onClick={handleMenuClose}>Profile</MenuItem>
                                 <MenuItem sx={{ fontFamily: "'Merriweather', serif" }} onClick={handleMenuClose}>My Visits</MenuItem>
-                                <MenuItem sx={{ fontFamily: "'Merriweather', serif" }} onClick={handleMenuClose}>Logout</MenuItem>
+                                <MenuItem sx={{ fontFamily: "'Merriweather', serif" }} onClick={handleLogout}>Logout</MenuItem>
                             </Menu>
                         </div>
                     </Toolbar>
                 </AppBar>
             </Box>
+            {/* Custom Snackbar to display messages */}
+            <CustomSnackbar
+                open={snackbar.open}
+                onClose={handleCloseSnackbar}
+                severity={snackbar.severity}
+                msg={snackbar.msg}
+            />
         </>
     );
 };

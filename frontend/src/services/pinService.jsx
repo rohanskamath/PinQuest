@@ -17,6 +17,7 @@ export const addNewPin = async (data) => {
         const response = await appClient.post('/pins', data)
         return response.data
     } catch (error) {
+        console.log("err",error)
         throw error.response?.data?.error || "Something went wrong!";
     }
 }

@@ -69,13 +69,13 @@ const CustomMapBox = ({ location }) => {
                 if (!review[key]) {
                     review[key] = {
                         ...pin,
-                        reviews: [{ desc: pin.desc, email: pin.email, rating: pin.rating }],
+                        reviews: [{ desc: pin.desc, email: pin.email, rating: pin.rating, category: pin.category }],
                         ratingSum: pin.rating,
                         reviewCount: 1,
                         avgRating: pin.rating.toFixed(1),
                     };
                 } else {
-                    review[key].reviews.push({ desc: pin.desc, email: pin.email, rating: pin.rating });
+                    review[key].reviews.push({ desc: pin.desc, email: pin.email, rating: pin.rating, category: pin.category });
                     review[key].ratingSum += pin.rating;
                     review[key].reviewCount += 1;
                     review[key].avgRating = (review[key].ratingSum / review[key].reviewCount).toFixed(1)
