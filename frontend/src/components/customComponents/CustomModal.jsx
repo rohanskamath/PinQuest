@@ -1,8 +1,6 @@
 import React from 'react'
 import Popover from '@mui/material/Popover';
-import { Box, List, ListItem } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { Box, Stack } from '@mui/material';
 import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
 import CustomTypography from '../customFormControls/CustomTypography';
 import { createUserName } from '../../services/authService';
@@ -68,7 +66,7 @@ const CustomModal = ({ open, setOpen, anchorPosition, pin }) => {
                                             borderRadius: "5px"
                                         }}
                                     >
-                                        <CustomTypography sx={{ fontSize: "12px", color: "white" }} marginTop='0px'>{pin?.avgrating} &#x2606;</CustomTypography>
+                                        <CustomTypography sx={{ fontSize: "12px", color: "white" }} marginTop='0px'>{pin?.avgRating} &#x2606;</CustomTypography>
                                     </Box>
                                 </Box>
                                 <CustomTypography sx={{ fontSize: "12px", color: "#660033", fontWeight: "bold" }} marginTop='0px'>Reviews:</CustomTypography>
@@ -76,31 +74,42 @@ const CustomModal = ({ open, setOpen, anchorPosition, pin }) => {
                                     maxHeight: "100px",
                                     overflowY: "auto",
                                     overflowX: "hidden",
-                                    border: "1px solid #ccc",
-                                    borderRadius: "5px"
+                                    padding: "0 6px 0 0"
                                 }}>
-                                    <List
-                                        sx={{
-                                            '& .MuiList-root': {
-                                                margin: "0px",
-                                                paddingTop: "0px"
-                                            }
-                                        }}
-                                    >
-                                        {
-                                            pin.reviews.map((review, index) => (
-                                                <ListItem key={index} sx={{
-                                                    display: "block", '& .MuiListItem-root': {
-                                                        padding: "0px"
-                                                    }
-                                                }}>
-                                                    <CustomTypography sx={{ fontSize: "10px" }} marginTop='0px'>
-                                                        {review} - {createUserName(pin?.email)}
-                                                    </CustomTypography>
-                                                </ListItem>
-                                            ))
-                                        }
-                                    </List>
+                                    {
+                                        pin.reviews.map((review, index) => {
+                                            return (
+                                                <Stack key={index}>
+                                                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                                        <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{createUserName(review?.email)}</CustomTypography>
+                                                        <Box
+                                                            sx={{
+                                                                backgroundColor: review?.rating >= 4 ? "green" :
+                                                                    review?.rating === 3 ? "gold" :
+                                                                        "red",
+                                                                padding: "0 5px",
+                                                                borderRadius: "5px"
+                                                            }}
+                                                        >
+                                                            <CustomTypography sx={{ fontSize: "12px", color: "white" }} marginTop='0px'>{review?.rating} &#x2606;</CustomTypography>
+                                                        </Box>
+                                                    </Box>
+                                                    <Box sx={{
+                                                        margin: "5px 0px",
+                                                        maxHeight: "100px",
+                                                        overflowY: "auto",
+                                                        overflowX: "hidden",
+                                                        border: "1px solid #ccc",
+                                                        borderRadius: "5px"
+                                                    }}>
+                                                        <CustomTypography sx={{ fontSize: "12px", padding: "2px 4px" }} marginTop='0px'>{review?.desc}</CustomTypography>
+                                                    </Box>
+                                                </Stack>
+                                            )
+                                        })
+                                    }
+
+
                                 </Box>
 
                             </div>

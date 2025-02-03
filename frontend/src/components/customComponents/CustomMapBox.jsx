@@ -69,13 +69,13 @@ const CustomMapBox = ({ location }) => {
                 if (!review[key]) {
                     review[key] = {
                         ...pin,
-                        reviews: [pin.desc],
+                        reviews: [{ desc: pin.desc, email: pin.email, rating: pin.rating }],
                         ratingSum: pin.rating,
                         reviewCount: 1,
-                        avgrating: pin.rating.toFixed(1),
+                        avgRating: pin.rating.toFixed(1),
                     };
                 } else {
-                    review[key].reviews.push(pin.desc);
+                    review[key].reviews.push({ desc: pin.desc, email: pin.email, rating: pin.rating });
                     review[key].ratingSum += pin.rating;
                     review[key].reviewCount += 1;
                     review[key].avgRating = (review[key].ratingSum / review[key].reviewCount).toFixed(1)
@@ -83,7 +83,7 @@ const CustomMapBox = ({ location }) => {
                 return review;
             }, {});
 
-            console.log("hello",Object.values(groupedPins))
+            console.log("hello", Object.values(groupedPins))
 
             setPins(Object.values(groupedPins));
             setSnackbar({ open: true, msg: res.message, severity: 'success' });
