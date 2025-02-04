@@ -21,6 +21,7 @@ import CustomUserModal from './CustomUserModal';
 import { searchLocation } from '../../services/locationService';
 import { setLocation, setPlaceName } from '../../redux/slices/locationSlice';
 import { clearUserData } from '../../redux/slices/userSlice'
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -67,6 +68,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const CustomNavigationBar = ({ placeName }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [searchQuery, setSearchQuery] = useState(placeName)
     const [suggestions, setSuggestions] = useState([])
@@ -120,6 +122,11 @@ const CustomNavigationBar = ({ placeName }) => {
         setSnackbar({ ...snackbar, open: false });
     };
 
+    const handleVisits = () => {
+        handleMenuClose();
+        navigate("/visits")
+    }
+
     const handleLogout = () => {
         setSnackbar({ open: true, msg: 'Logging out', severity: 'success' });
         Cookies.remove("token");
@@ -137,7 +144,7 @@ const CustomNavigationBar = ({ placeName }) => {
                 <AppBar position="static" sx={{ backgroundColor: "#660033" }}>
                     <Toolbar>
                         <span><MyLocationIcon sx={{ margin: '4px 5px 0 0', fontSize: '24px' }} /></span>
-                        <CustomTypography color="white" sx={{ flexGrow: 1, fontSize: '24px', margin: '0 10px 0 0' }}>
+                        <CustomTypography onClick={() => navigate("/")} color="white" sx={{ flexGrow: 1, fontSize: '24px', margin: '0 10px 0 0', cursor: "pointer" }}>
                             PinQuest
                         </CustomTypography>
                         <Search sx={{ display: { xs: 'none', sm: 'block' }, margin: '0 10px 0 0' }}>
@@ -199,9 +206,9 @@ const CustomNavigationBar = ({ placeName }) => {
                                     horizontal: 'right',
                                 }}
                             >
-                                <MenuItem sx={{ fontFamily: "'Merriweather', serif", fontSize:"14px" }} onClick={handleOpen}><AccountCircleIcon />&nbsp;Profile</MenuItem>
-                                <MenuItem sx={{ fontFamily: "'Merriweather', serif", fontSize:"14px"  }} onClick={handleMenuClose}><LocationSearchingIcon />&nbsp;My Visits</MenuItem>
-                                <MenuItem sx={{ fontFamily: "'Merriweather', serif", fontSize:"14px"  }} onClick={handleLogout}><LogoutIcon />&nbsp;Logout</MenuItem>
+                                <MenuItem sx={{ fontFamily: "'Merriweather', serif", fontSize: "14px" }} onClick={handleOpen}><AccountCircleIcon />&nbsp;Profile</MenuItem>
+                                <MenuItem sx={{ fontFamily: "'Merriweather', serif", fontSize: "14px" }} onClick={handleVisits}><LocationSearchingIcon />&nbsp;My Visits</MenuItem>
+                                <MenuItem sx={{ fontFamily: "'Merriweather', serif", fontSize: "14px" }} onClick={handleLogout}><LogoutIcon />&nbsp;Logout</MenuItem>
                             </Menu>
                         </div>
                     </Toolbar>

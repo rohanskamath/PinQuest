@@ -6,6 +6,8 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Main from "./pages/Main/Main";
 import { CssBaseline } from "@mui/material";
 import ProtectedRoute from "./components/customComponents/ProtectedRoute";
+import Layout from "./pages/Layout";
+import VisitsPage from "./pages/VisitsPage/VisitsPage";
 
 const App = () => {
   return (
@@ -17,10 +19,13 @@ const App = () => {
             path="/"
             element={
               <ProtectedRoute>
-                <Main />
+                <Layout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<Main />} />
+            <Route path="visits" element={<VisitsPage />} />
+          </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
