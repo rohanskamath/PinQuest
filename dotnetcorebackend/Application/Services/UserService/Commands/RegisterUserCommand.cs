@@ -1,9 +1,9 @@
 ﻿using dotnetcorebackend.Application.DTOs;
 using MediatR;
 
-namespace dotnetcorebackend.Application.UserService.Commands
+namespace dotnetcorebackend.Application.Services.UserService.Commands
 {
-    public class RegisterUserCommand : IRequest<RegisterUserDTO>
+    public class RegisterUserCommand : IRequest<UserDTO>
     {
         public required string Email { get; set; }
         public required string FullName { get; set; }

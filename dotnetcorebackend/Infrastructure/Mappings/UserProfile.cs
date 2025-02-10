@@ -8,7 +8,7 @@ namespace dotnetcorebackend.Infrastructure.Mappings
     {
         public UserProfile()
         {
-            CreateMap<RegisterUserDTO, User>().ReverseMap();
+            CreateMap<UserDTO, User>().ReverseMap();
         }
     }
 }

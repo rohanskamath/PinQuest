@@ -1,6 +1,6 @@
 ﻿using dotnetcorebackend.Models;
 
-namespace dotnetcorebackend.Infrastructure.Repositories.UserRepository
+namespace dotnetcorebackend.Application.Repositories.UserRepository
 {
     public interface IUserRepository
     {

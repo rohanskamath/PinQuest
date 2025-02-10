@@ -1,8 +1,9 @@
 using dotnetcorebackend;
-using dotnetcorebackend.Application.UserService.Commands;
+using dotnetcorebackend.Application.Repositories.UserRepository;
+using dotnetcorebackend.Application.Services.UserService.Commands;
 using dotnetcorebackend.Infrastructure.Context;
 using dotnetcorebackend.Infrastructure.Mappings;
-using dotnetcorebackend.Infrastructure.Repositories.UserRepository;
+using DotNetEnv;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -10,11 +11,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 /*************************************************************************************/
+
 
 // Injecting ApplicationDBContext class
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
@@ -22,10 +23,11 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 
 // Injecting MediatR
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-//builder.Services.AddMediatR(typeof(ValidationBehavior<,>));
+
 builder.Services.AddFluentValidationAutoValidation()
    .AddFluentValidationClientsideAdapters()
    .AddValidatorsFromAssemblyContaining<RegisterUserCommandValidator>();
+
 // Injecting AutoMapper
 builder.Services.AddAutoMapper(typeof(UserProfile));
 
@@ -44,6 +46,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("corspolicy", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,6 +66,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Using CORS Policy
+app.UseCors("corspolicy");
 
 app.UseAuthorization();
 

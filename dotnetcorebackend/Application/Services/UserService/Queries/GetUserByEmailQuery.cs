@@ -1,11 +1,11 @@
 ﻿using dotnetcorebackend.Application.DTOs;
 using MediatR;
 
-namespace dotnetcorebackend.Application.UserService.Queries
+namespace dotnetcorebackend.Application.Services.UserService.Queries
 {
-    public class GetUserByEmailQuery :IRequest<bool>
+    public class GetUserByEmailQuery : IRequest<UserDTO>
     {
-        public string? Email { get; }
+        public string Email { get; }
 
         public GetUserByEmailQuery(string email)
         {

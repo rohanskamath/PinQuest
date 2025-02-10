@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using dotnetcorebackend.Application.DTOs;
-using dotnetcorebackend.Infrastructure.Repositories.UserRepository;
+using dotnetcorebackend.Application.Repositories.UserRepository;
 using dotnetcorebackend.Models;
 using MediatR;
 
-namespace dotnetcorebackend.Application.UserService.Commands
+namespace dotnetcorebackend.Application.Services.UserService.Commands
 {
-    public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, RegisterUserDTO>
+    public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, UserDTO>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -16,10 +16,10 @@ namespace dotnetcorebackend.Application.UserService.Commands
             _mapper = mapper;
         }
 
-        public async Task<RegisterUserDTO> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<UserDTO> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
 
-            var hashedPassword=BCrypt.Net.BCrypt.HashPassword(request.Password);
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             // Mapping Commad to domain model
             var user = new User
@@ -34,7 +34,7 @@ namespace dotnetcorebackend.Application.UserService.Commands
             var registeredUser = await _userRepository.RegisterUserAsync(user);
 
             // Convert User Model to RegisterUserDTO
-            var userRegisterDTO = _mapper.Map<RegisterUserDTO>(registeredUser);
+            var userRegisterDTO = _mapper.Map<UserDTO>(registeredUser);
             return userRegisterDTO;
         }
     }

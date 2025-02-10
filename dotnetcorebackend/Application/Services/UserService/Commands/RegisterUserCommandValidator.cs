@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace dotnetcorebackend.Application.UserService.Commands
+namespace dotnetcorebackend.Application.Services.UserService.Commands
 {
     public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {

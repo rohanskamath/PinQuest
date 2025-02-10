@@ -9,7 +9,6 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
@@ -23,12 +22,12 @@
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.4.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
-	  <PackageReference Include="MediatR" Version="11.1.0" />
+	  <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Services\Pinservice\Commands\" />
-    <Folder Include="Application\Services\Pinservice\Queries\" />
+    <Folder Include="Application\Pinservice\Commands\" />
+    <Folder Include="Application\Pinservice\Queries\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

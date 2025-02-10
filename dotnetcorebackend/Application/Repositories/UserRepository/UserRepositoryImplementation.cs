@@ -2,7 +2,7 @@
 using dotnetcorebackend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnetcorebackend.Infrastructure.Repositories.UserRepository
+namespace dotnetcorebackend.Application.Repositories.UserRepository
 {
     public class UserRepositoryImplementation : IUserRepository
     {
