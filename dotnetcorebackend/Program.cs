@@ -13,11 +13,24 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Text;
 using dotnetcorebackend.Infrastructure.Middleware;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 /*************************************************************************************/
+
+// Injecting Serilog
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()  // Logs to Console
+    .WriteTo.File("Logs/user_activity.log",
+                  rollingInterval: RollingInterval.Day,  // Creates a new log file every day
+                  retainedFileCountLimit: 7)  // Keeps logs for the last 7 days
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog();
 
 // Jwt Configuration
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -90,8 +103,8 @@ app.UseHttpsRedirection();
 // Using CORS Policy
 app.UseCors("corspolicy");
 
-// Use Global Exception Middleware
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+// Use User activity Middleware
+app.UseMiddleware<UserActivityMiddleware>();
 
 app.UseAuthorization();
 
