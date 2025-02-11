@@ -18,24 +18,31 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
 
         public async Task<UserDTO> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
-
-            // Mapping Commad to domain model
-            var user = new User
+            try
             {
-                UserId = Guid.NewGuid(),
-                Email = request.Email,
-                FullName = request.FullName,
-                Username = request.UserName,
-                Password = hashedPassword,
-            };
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-            var registeredUser = await _userRepository.RegisterUserAsync(user);
+                // Mapping Commad to domain model
+                var user = new User
+                {
+                    UserId = Guid.NewGuid(),
+                    Email = request.Email,
+                    FullName = request.FullName,
+                    Username = request.UserName,
+                    Password = hashedPassword,
+                };
 
-            // Convert User Model to RegisterUserDTO
-            var userRegisterDTO = _mapper.Map<UserDTO>(registeredUser);
-            return userRegisterDTO;
+                var registeredUser = await _userRepository.RegisterUserAsync(user);
+
+                // Convert User Model to RegisterUserDTO
+                var userRegisterDTO = _mapper.Map<UserDTO>(registeredUser);
+                return userRegisterDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred while processing your request: {ex.Message}", ex);
+            }
+
         }
     }
 }

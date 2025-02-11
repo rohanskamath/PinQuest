@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Text;
+using dotnetcorebackend.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +60,7 @@ builder.Services.AddScoped<IUserRepository, UserRepositoryImplementation>();
 
 //Injecting Controller class
 builder.Services.AddControllers();
+builder.Services.AddLogging();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -87,6 +89,9 @@ app.UseHttpsRedirection();
 
 // Using CORS Policy
 app.UseCors("corspolicy");
+
+// Use Global Exception Middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 

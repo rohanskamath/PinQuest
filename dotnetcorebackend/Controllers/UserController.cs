@@ -22,26 +22,34 @@ namespace dotnetcorebackend.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserCommand command)
         {
-
-            var existingUser = await _mediator.Send(new GetUserByEmailQuery(command.Email));
-            if (existingUser != null)
+            try
             {
-                return BadRequest(new { success = false, message = "Email is already registered!" });
+                var existingUser = await _mediator.Send(new GetUserByEmailQuery(command.Email));
+                if (existingUser != null)
+                { 
+                    throw new Exception("Email is already registered!");
+                }
+                await _mediator.Send(command);
+                return Ok(new { success = true, message = "Registered Sucessfully!" });
             }
-            await _mediator.Send(command);
-            return Ok(new { success = true, message = "Registered Sucessfully!" });
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserCommand command)
         {
-            var existingUser = await _mediator.Send(new GetUserByEmailQuery(command.Email));
-            if (existingUser == null)
+            try
             {
-                return BadRequest(new { success = false, message = "User not found!..Kindly register" });
+                var response = await _mediator.Send(command);
+                return Ok(response);
             }
-            var response= await _mediator.Send(command);
-            return Ok(new { success = true, message = response });
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
         }
     }
 }
