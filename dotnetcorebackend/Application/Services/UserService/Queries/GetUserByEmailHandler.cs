@@ -15,6 +15,10 @@ namespace dotnetcorebackend.Application.Services.UserService.Queries
         public async Task<UserDTO?> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
         {
             var existingUser = await _userRepository.GetByEmailAsync(request.Email);
+            if (existingUser == null)
+            {
+                return null;
+            }
             return new UserDTO
             {
                 FullName = existingUser.FullName,

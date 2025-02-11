@@ -30,55 +30,51 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
             try
             {
                 var existingUser = await _userRepository.GetByEmailAsync(request.Email);
-                if (existingUser != null)
+                if (existingUser == null)
                 {
-                    if (existingUser.Email == request.Email && BCrypt.Net.BCrypt.Verify(request.Password, existingUser.Password))
-                    {
-                        var userData = _mapper.Map<UserDTO>(existingUser);
+                    throw new Exception("User not found!.. Kindly register!");
+                }
 
-                        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-                        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-                        var claims = new List<Claim>
+                if (existingUser.Email != request.Email || !BCrypt.Net.BCrypt.Verify(request.Password, existingUser.Password))
+                {
+                    throw new Exception("Invalid Username/Password!");
+                }
+
+                var userData = _mapper.Map<UserDTO>(existingUser);
+
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                var claims = new List<Claim>
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, existingUser.Email),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim("UserData",JsonSerializer.Serialize(userData)),
                     };
 
-                        var token = new JwtSecurityToken(
-                            issuer: _configuration["Jwt:Issuer"],
-                            audience: _configuration["Jwt:Audience"],
-                            claims: claims,
-                            expires: DateTime.UtcNow.AddMinutes(120),
-                            signingCredentials: credentials
-                        );
+                var token = new JwtSecurityToken(
+                    issuer: _configuration["Jwt:Issuer"],
+                    audience: _configuration["Jwt:Audience"],
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(120),
+                    signingCredentials: credentials
+                );
 
-                        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-                        var cookieOptions = new CookieOptions
-                        {
-                            HttpOnly = false,
-                            Secure = false,
-                            SameSite = SameSiteMode.Strict,
-                            Expires = DateTime.UtcNow.AddMinutes(120),
-                            Path = "/"
-                        };
-                        _contextAccessor.HttpContext.Response.Cookies.Append("token", tokenString, cookieOptions);
-                        return new
-                        {
-                            success = true,
-                            message = "LoggedIn successfully!",
-                            token = tokenString
-                        };
-                    }
-                    else if (existingUser == null)
-                    {
-                        throw new Exception("User not found!..Kindly register!");
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid Username/Password!");
-                    }
-                }
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = false,
+                    Secure = false,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddMinutes(120),
+                    Path = "/"
+                };
+                _contextAccessor.HttpContext.Response.Cookies.Append("token", tokenString, cookieOptions);
+                return new
+                {
+                    success = true,
+                    message = "LoggedIn successfully!",
+                    token = tokenString
+                };
             }
             catch (Exception ex)
             {
