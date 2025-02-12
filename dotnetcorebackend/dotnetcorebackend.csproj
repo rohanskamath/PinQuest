@@ -32,8 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Services\Pinservice\Commands\" />
-    <Folder Include="Application\Services\Pinservice\Queries\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

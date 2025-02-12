@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using dotnetcorebackend.Application.DTOs;
+using dotnetcorebackend.Application.DTOs.UserDTOs;
 using dotnetcorebackend.Application.Repositories.UserRepository;
 using dotnetcorebackend.Models;
 using MediatR;

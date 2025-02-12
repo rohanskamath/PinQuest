@@ -1,4 +1,4 @@
-﻿using dotnetcorebackend.Application.DTOs;
+﻿using dotnetcorebackend.Application.DTOs.UserDTOs;
 using MediatR;
 
 namespace dotnetcorebackend.Application.Services.UserService.Commands

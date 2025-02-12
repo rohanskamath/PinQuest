@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace dotnetcorebackend.Application.DTOs
+namespace dotnetcorebackend.Application.DTOs.UserDTOs
 {
     public class UserDTO
     {

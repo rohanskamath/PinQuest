@@ -1,4 +1,4 @@
-﻿using dotnetcorebackend.Application.DTOs;
+﻿using dotnetcorebackend.Application.DTOs.UserDTOs;
 using dotnetcorebackend.Application.Repositories.UserRepository;
 using MediatR;
 
@@ -14,18 +14,26 @@ namespace dotnetcorebackend.Application.Services.UserService.Queries
 
         public async Task<UserDTO?> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByEmailAsync(request.Email);
-            if (existingUser == null)
+            try
             {
-                return null;
+                var existingUser = await _userRepository.GetByEmailAsync(request.Email);
+                if (existingUser == null)
+                {
+                    return null;
+                }
+                return new UserDTO
+                {
+                    FullName = existingUser.FullName,
+                    Email = existingUser.Email,
+                    Username = existingUser.Username,
+                    UniqueUserTokenId = existingUser.UniqueUserTokenId,
+                };
+
             }
-            return new UserDTO
+            catch (Exception ex)
             {
-                FullName = existingUser.FullName,
-                Email = existingUser.Email,
-                Username = existingUser.Username,
-                UniqueUserTokenId = existingUser.UniqueUserTokenId,
-            };
+                throw new Exception($"An error occurred while processing your request: {ex.Message}", ex);
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Text;
 using dotnetcorebackend.Infrastructure.Middleware;
 using Serilog;
 using Serilog.Events;
+using dotnetcorebackend.Application.Repositories.PinsRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,14 +61,17 @@ builder.Services.AddFluentValidationAutoValidation()
    .AddFluentValidationClientsideAdapters()
    .AddValidatorsFromAssemblyContaining<RegisterUserCommandValidator>();
 
-// Injecting AutoMapper
-builder.Services.AddAutoMapper(typeof(UserProfile));
+// Injecting AutoMapper (Multiple files)
+builder.Services.AddAutoMapper(typeof(Program));
 
 // Injecting Fluent Validation
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 // Injecting UserRepositoryImplementation class with Interface
 builder.Services.AddScoped<IUserRepository, UserRepositoryImplementation>();
+
+// Injecting PinsRepositoryImplementation class with Interface
+builder.Services.AddScoped<IPinsRepository,PinsRepositoryImplementation>();
 
 /****************************************************************************************/
 
