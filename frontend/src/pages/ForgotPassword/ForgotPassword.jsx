@@ -90,7 +90,7 @@ const ForgotPassword = () => {
                 position: "relative"
               }}>
                 <ArrowBackIosIcon
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate('/login')}
                   sx={{
                     position: "absolute",
                     top: { xs: "10px", sm: "20px" },

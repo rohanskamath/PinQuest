@@ -39,7 +39,7 @@ const ProtectedRoute = ({ children }) => {
     return (
       <>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-          <ClipLoader color="#4A90E2" loading={loading} size={50} />
+          <ClipLoader color="#4A90E2" loading={loading} size={100} />
         </div>
       </>
     );
