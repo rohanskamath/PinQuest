@@ -12,6 +12,7 @@ namespace dotnetcorebackend.Application.Repositories.UserRepository
         {
             _applicationDBContext = applicationDB;
         }
+
         public async Task<User?> GetByEmailAsync(string email)
         {
             var result = await _applicationDBContext.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -23,6 +24,13 @@ namespace dotnetcorebackend.Application.Repositories.UserRepository
             await _applicationDBContext.Users.AddAsync(user);
             await _applicationDBContext.SaveChangesAsync();
             return user;
+        }
+
+        public async Task<bool> ChangePasswordAsync(User user)
+        {
+            _applicationDBContext.Users.Update(user);
+            await _applicationDBContext.SaveChangesAsync();
+            return true;
         }
     }
 }

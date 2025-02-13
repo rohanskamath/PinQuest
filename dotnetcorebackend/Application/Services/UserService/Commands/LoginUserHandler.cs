@@ -32,12 +32,12 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
                 var existingUser = await _userRepository.GetByEmailAsync(request.Email);
                 if (existingUser == null)
                 {
-                    throw new Exception("User not found!.. Kindly register!");
+                    return new { success = false, message = "User not found!.. Kindly register!" };
                 }
 
                 if (existingUser.Email != request.Email || !BCrypt.Net.BCrypt.Verify(request.Password, existingUser.Password))
                 {
-                    throw new Exception("Invalid Username/Password!");
+                    return new { success = false, message = "Invalid Username/Password!", };
                 }
 
                 var userData = _mapper.Map<UserDTO>(existingUser);

@@ -26,11 +26,11 @@ namespace dotnetcorebackend.Controllers
             {
                 var existingUser = await _mediator.Send(new GetUserByEmailQuery(command.Email));
                 if (existingUser != null)
-                { 
-                    throw new Exception("Email is already registered!");
+                {
+                    return BadRequest(new { success = false, message = "Email is already registered!" });
                 }
                 await _mediator.Send(command);
-                return Ok(new { success = true, message = "Registered Sucessfully!" });
+                return Ok(new { success = true, message = "Registered sucessfully!" });
             }
             catch (Exception ex)
             {
@@ -45,6 +45,20 @@ namespace dotnetcorebackend.Controllers
             {
                 var response = await _mediator.Send(command);
                 return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ForgotPassword(UpdateUserPasswordCommand command)
+        {
+            try
+            {
+                var response = await _mediator.Send(command);
+                return Ok(new { success = response, message = "Password changed sucessfully!" });
             }
             catch (Exception ex)
             {

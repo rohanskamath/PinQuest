@@ -22,7 +22,7 @@ namespace dotnetcorebackend.Controllers
             try
             {
                 var newPin = await _mediator.Send(command);
-                return Ok(new { success = true, message = "Pin created Sucessfully!" });
+                return Ok(new { success = true, message = "Pin created sucessfully!" });
             }
             catch (Exception ex)
             {
@@ -36,7 +36,7 @@ namespace dotnetcorebackend.Controllers
             try
             {
                 var pins = await _mediator.Send(new GetAllPinsQuery());
-                return Ok(new { success = true, message = "Pins Fetched Successfully!", data = pins });
+                return Ok(new { success = true, message = "Pins fetched successfully!", data = pins });
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace dotnetcorebackend.Controllers
             try
             {
                 var pins = await _mediator.Send(new GetPinsByIdQuery(userId));
-                return Ok(new { success = true, message = "Your Pins Fetched Successfully!", data = pins });
+                return Ok(new { success = true, message = "Your pins fetched successfully!", data = pins });
             }
             catch (Exception ex)
             {
