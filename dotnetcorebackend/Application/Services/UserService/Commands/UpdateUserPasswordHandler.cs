@@ -22,7 +22,7 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
                     return new { success = false, message = "User not found!.. Kindly register!" };
                 }
                 existingUser.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
-                bool result = await _userRepository.ChangePasswordAsync(existingUser);
+                bool result = await _userRepository.UpdateUserAsync(existingUser);
                 return true;
             }
             catch (Exception ex)

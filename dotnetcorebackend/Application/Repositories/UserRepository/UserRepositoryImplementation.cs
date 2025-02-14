@@ -26,7 +26,7 @@ namespace dotnetcorebackend.Application.Repositories.UserRepository
             return user;
         }
 
-        public async Task<bool> ChangePasswordAsync(User user)
+        public async Task<bool> UpdateUserAsync(User user)
         {
             _applicationDBContext.Users.Update(user);
             await _applicationDBContext.SaveChangesAsync();

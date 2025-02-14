@@ -3,7 +3,7 @@ import appClient from './appClient'
 /* POST API - Registration */
 export const registerUser = async (data) => {
     try {
-        const response = await appClient.post('/user/register', data)
+        const response = await appClient.post('/register', data)
         return response.data
     } catch (error) {
         throw error.response?.data?.error || "Something went wrong!";
@@ -13,7 +13,7 @@ export const registerUser = async (data) => {
 /* POST API - Login */
 export const loginUser = async (data) => {
     try {
-        const response = await appClient.post('/user/login', data)
+        const response = await appClient.post('/login', data)
         return response.data
     } catch (error) {
         throw error.response?.data?.error || "Something went wrong!";
@@ -23,7 +23,7 @@ export const loginUser = async (data) => {
 /* POST API - Token Verification */
 export const verifyToken = async (token) => {
     try {
-        const response = await appClient.post('/user/auth', {}, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await appClient.post('/token-veification', {}, { headers: { Authorization: `Bearer ${token}` } })
         return response.data
     } catch (error) {
         throw error.response?.data?.error || "Something went wrong!";

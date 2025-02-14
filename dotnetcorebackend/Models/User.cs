@@ -21,7 +21,8 @@ namespace dotnetcorebackend.Models
 
         [Required]
         public required string Password { get; set; }
-        public Guid UniqueUserTokenId { get; set; }
+        public Guid? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiry { get; set; }
 
         // Navigation Property
         public ICollection<UserPin> UserPins { get; set; } = new List<UserPin>();

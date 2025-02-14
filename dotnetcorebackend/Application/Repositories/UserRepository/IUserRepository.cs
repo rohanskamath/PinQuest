@@ -6,6 +6,6 @@ namespace dotnetcorebackend.Application.Repositories.UserRepository
     {
         public Task<User?> GetByEmailAsync(string email);
         public Task<User> RegisterUserAsync(User user);
-        public Task<bool> ChangePasswordAsync(User user);
+        public Task<bool> UpdateUserAsync(User user);
     }
 }

@@ -2,27 +2,21 @@
 using dotnetcorebackend.Application.DTOs.UserDTOs;
 using dotnetcorebackend.Application.Repositories.UserRepository;
 using dotnetcorebackend.Models;
+using dotnetcorebackend.Application.Helpers;
 using MediatR;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
 
 namespace dotnetcorebackend.Application.Services.UserService.Commands
 {
     public class LoginUserHandler : IRequestHandler<LoginUserCommand, object?>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IConfiguration _configuration;
-        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
-        public LoginUserHandler(IUserRepository userRepository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        private readonly TokenCreationHelper _tokenCreationHelper;
+        public LoginUserHandler(IUserRepository userRepository, IMapper mapper, TokenCreationHelper tokenCreationHelper)
         {
             _userRepository = userRepository;
-            _configuration = configuration;
-            _contextAccessor = httpContextAccessor;
             _mapper = mapper;
+            _tokenCreationHelper = tokenCreationHelper;
         }
 
         public async Task<object?> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -40,35 +34,16 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
                     return new { success = false, message = "Invalid Username/Password!", };
                 }
 
+                var refreshToken = _tokenCreationHelper.GenerateRefreshToken();
+                existingUser.RefreshToken = refreshToken;
+                existingUser.RefreshTokenExpiry = DateTime.UtcNow.AddDays(5);
+
                 var userData = _mapper.Map<UserDTO>(existingUser);
 
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-                var claims = new List<Claim>
-                    {
-                        new Claim(JwtRegisteredClaimNames.Sub, existingUser.Email),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim("UserData",JsonSerializer.Serialize(userData)),
-                    };
+                var tokenString = _tokenCreationHelper.GenerateAccessToken(userData);
 
-                var token = new JwtSecurityToken(
-                    issuer: _configuration["Jwt:Issuer"],
-                    audience: _configuration["Jwt:Audience"],
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(120),
-                    signingCredentials: credentials
-                );
+                _tokenCreationHelper.SetAuthCookie("token", tokenString);
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-                var cookieOptions = new CookieOptions
-                {
-                    HttpOnly = false,
-                    Secure = false,
-                    SameSite = SameSiteMode.Strict,
-                    Expires = DateTime.UtcNow.AddMinutes(120),
-                    Path = "/"
-                };
-                _contextAccessor.HttpContext.Response.Cookies.Append("token", tokenString, cookieOptions);
                 return new
                 {
                     success = true,

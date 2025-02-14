@@ -17,6 +17,7 @@ using Serilog;
 using Serilog.Events;
 using dotnetcorebackend.Application.Repositories.PinsRepository;
 using dotnetcorebackend.Application.Repositories.EmailRepository;
+using dotnetcorebackend.Application.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,8 @@ builder.Services.AddMemoryCache();
 
 // Injecting Fluent Validation
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+builder.Services.AddSingleton<TokenCreationHelper>();
 
 // Injecting UserRepositoryImplementation class with Interface
 builder.Services.AddScoped<IUserRepository, UserRepositoryImplementation>();
