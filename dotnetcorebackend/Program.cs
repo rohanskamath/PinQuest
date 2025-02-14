@@ -16,6 +16,7 @@ using dotnetcorebackend.Infrastructure.Middleware;
 using Serilog;
 using Serilog.Events;
 using dotnetcorebackend.Application.Repositories.PinsRepository;
+using dotnetcorebackend.Application.Repositories.EmailRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +65,9 @@ builder.Services.AddFluentValidationAutoValidation()
 // Injecting AutoMapper (Multiple files)
 builder.Services.AddAutoMapper(typeof(Program));
 
+// Injecting IMemoryCache to store OTP in Memory
+builder.Services.AddMemoryCache();
+
 // Injecting Fluent Validation
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -72,6 +76,9 @@ builder.Services.AddScoped<IUserRepository, UserRepositoryImplementation>();
 
 // Injecting PinsRepositoryImplementation class with Interface
 builder.Services.AddScoped<IPinsRepository,PinsRepositoryImplementation>();
+
+// Injecting EmailRepositoryImplementation class with Interface
+builder.Services.AddScoped<IEmailService, EmailServiceRepository>();
 
 /****************************************************************************************/
 

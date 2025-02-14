@@ -1,4 +1,6 @@
-﻿using dotnetcorebackend.Application.Services.UserService.Commands;
+﻿using dotnetcorebackend.Application.Services.EmailService;
+using dotnetcorebackend.Application.Services.OTPService;
+using dotnetcorebackend.Application.Services.UserService.Commands;
 using dotnetcorebackend.Application.Services.UserService.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -20,7 +22,7 @@ namespace dotnetcorebackend.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterUserCommand command)
+        public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
         {
             try
             {
@@ -39,7 +41,7 @@ namespace dotnetcorebackend.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginUserCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
             try
             {
@@ -53,7 +55,7 @@ namespace dotnetcorebackend.Controllers
         }
 
         [HttpPut("change-password")]
-        public async Task<IActionResult> ForgotPassword(UpdateUserPasswordCommand command)
+        public async Task<IActionResult> ForgotPassword([FromBody] UpdateUserPasswordCommand command)
         {
             try
             {
@@ -63,6 +65,34 @@ namespace dotnetcorebackend.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost("send-otp")]
+        public async Task<IActionResult> SendOTP([FromBody] SendOtpCommnd command)
+        {
+            try
+            {
+                var response = await _mediator.Send(command);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOTP([FromBody] VerifyOtpCommand command)
+        {
+            try
+            {
+                var response = await _mediator.Send(command);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, messge = ex.Message });
             }
         }
     }

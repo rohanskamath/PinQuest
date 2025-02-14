@@ -17,7 +17,7 @@ namespace dotnetcorebackend.Controllers
         }
 
         [HttpPost("pins")]
-        public async Task<IActionResult> CreatePins(CreateNewPinCommand command)
+        public async Task<IActionResult> CreatePins([FromBody] CreateNewPinCommand command)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace dotnetcorebackend.Controllers
         }
 
         [HttpGet("pins/{userId}")]
-        public async Task<IActionResult> GetPinsByUserId(Guid userId)
+        public async Task<IActionResult> GetPinsByUserId([FromRoute] Guid userId)
         {
             try
             {
