@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace dotnetcorebackend.Application.Services.OTPService
+namespace dotnetcorebackend.Application.Services.UserService.Commands
 {
     public class VerifyOtpHandler : IRequestHandler<VerifyOtpCommand, object>
     {
@@ -19,7 +19,7 @@ namespace dotnetcorebackend.Application.Services.OTPService
                 {
                     if (cachedOtp == request.Otp)
                     {
-                         _memoryCache.Remove(request.Email);
+                        _memoryCache.Remove(request.Email);
                         return Task.FromResult<object>(new { success = true, message = "OTP verified successfully." });
                     }
                     return Task.FromResult<object>(new { success = false, message = "Invalid OTP!" });

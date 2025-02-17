@@ -26,7 +26,7 @@ namespace dotnetcorebackend.Application.Services.UserService.Queries
                     FullName = existingUser.FullName,
                     Email = existingUser.Email,
                     Username = existingUser.Username,
-                    UniqueUserTokenId = existingUser.UniqueUserTokenId,
+                    RefreshToken = existingUser.RefreshToken,
                 };
 
             }

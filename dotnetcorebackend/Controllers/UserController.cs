@@ -1,6 +1,4 @@
-﻿using dotnetcorebackend.Application.Services.EmailService;
-using dotnetcorebackend.Application.Services.OTPService;
-using dotnetcorebackend.Application.Services.UserService.Commands;
+﻿using dotnetcorebackend.Application.Services.UserService.Commands;
 using dotnetcorebackend.Application.Services.UserService.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -84,6 +82,20 @@ namespace dotnetcorebackend.Controllers
 
         [HttpPost("verify-otp")]
         public async Task<IActionResult> VerifyOTP([FromBody] VerifyOtpCommand command)
+        {
+            try
+            {
+                var response = await _mediator.Send(command);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, messge = ex.Message });
+            }
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
         {
             try
             {

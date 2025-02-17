@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace dotnetcorebackend.Application.Services.EmailService
+namespace dotnetcorebackend.Application.Services.UserService.Commands
 {
     public class SendOtpCommnd : IRequest<object>
     {

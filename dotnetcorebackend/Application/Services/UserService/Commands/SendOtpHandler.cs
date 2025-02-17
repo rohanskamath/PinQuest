@@ -3,7 +3,7 @@ using dotnetcorebackend.Application.Repositories.UserRepository;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace dotnetcorebackend.Application.Services.EmailService
+namespace dotnetcorebackend.Application.Services.UserService.Commands
 {
     public class SendOtpHandler : IRequestHandler<SendOtpCommnd, object>
     {

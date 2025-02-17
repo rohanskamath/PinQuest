@@ -16,7 +16,7 @@ namespace dotnetcorebackend.Application.Helpers
             _configuration = configuration;
             _contextAccessor = contextAccessor;
         }
-        public string GenerateAccessToken(UserDTO userData)
+        public string GenerateJwtToken(UserDTO userData)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

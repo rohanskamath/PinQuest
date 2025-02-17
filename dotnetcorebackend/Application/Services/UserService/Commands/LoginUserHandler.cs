@@ -40,8 +40,7 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
 
                 var userData = _mapper.Map<UserDTO>(existingUser);
 
-                var tokenString = _tokenCreationHelper.GenerateAccessToken(userData);
-
+                var tokenString = _tokenCreationHelper.GenerateJwtToken(userData);
                 _tokenCreationHelper.SetAuthCookie("token", tokenString);
 
                 return new
