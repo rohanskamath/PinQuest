@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'js-cookie';
 
 const appClient = axios.create({
   baseURL: process.env.REACT_APP_NET_API_URL,
@@ -10,15 +11,16 @@ const appClient = axios.create({
   withCredentials: true
 });
 
-appClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      console.error('Session expired. Redirecting to login.');
-      window.location.href = '/';
+// Request interceptor: Attach token to requests
+appClient.interceptors.request.use(
+  async (config) => {
+    let token = Cookies.get('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
     }
-    return Promise.reject(error);
-  }
+    return config;
+  },
+  (err)=> Promise.reject(err)
 );
 
 export default appClient;

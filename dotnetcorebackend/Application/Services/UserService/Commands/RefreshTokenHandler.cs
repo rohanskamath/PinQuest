@@ -32,14 +32,14 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
                     var newRefreshToken = _tokenCreationHelper.GenerateRefreshToken();
                     existingUser.RefreshToken = newRefreshToken;
                     existingUser.RefreshTokenExpiry = DateTime.UtcNow.AddDays(5);
+                    await _userRepository.UpdateUserAsync(existingUser);
                 }
 
                 var userDTO = _mapper.Map<UserDTO>(existingUser);
 
                 var newTokenString = _tokenCreationHelper.GenerateJwtToken(userDTO);
-                _tokenCreationHelper.SetAuthCookie("token", newTokenString);
 
-                return new { success = false, message = "New Token generated sccuessfully!" };
+                return new { success = true, message = "New Token generated sccuessfully!", token = newTokenString };
 
             }
             catch (Exception ex)

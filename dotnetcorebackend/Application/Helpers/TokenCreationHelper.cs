@@ -10,11 +10,9 @@ namespace dotnetcorebackend.Application.Helpers
     public class TokenCreationHelper
     {
         private readonly IConfiguration _configuration;
-        private readonly IHttpContextAccessor _contextAccessor;
-        public TokenCreationHelper(IConfiguration configuration, IHttpContextAccessor contextAccessor)
+        public TokenCreationHelper(IConfiguration configuration)
         {
             _configuration = configuration;
-            _contextAccessor = contextAccessor;
         }
         public string GenerateJwtToken(UserDTO userData)
         {
@@ -30,7 +28,7 @@ namespace dotnetcorebackend.Application.Helpers
                     issuer: _configuration["Jwt:Issuer"],
                     audience: _configuration["Jwt:Audience"],
                     claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(120),
+                    expires: DateTime.UtcNow.AddSeconds(5),
                     signingCredentials: credentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -39,18 +37,6 @@ namespace dotnetcorebackend.Application.Helpers
         public Guid GenerateRefreshToken()
         {
             return Guid.NewGuid();
-        }
-        public void SetAuthCookie(string cookieName, string tokenString)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = false,
-                Secure = false,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddMinutes(120),
-                Path = "/"
-            };
-            _contextAccessor.HttpContext?.Response.Cookies.Append(cookieName, tokenString, cookieOptions);
         }
     }
 }

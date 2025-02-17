@@ -20,13 +20,13 @@ export const loginUser = async (data) => {
     }
 }
 
-/* POST API - Token Verification */
-export const verifyToken = async (token) => {
+export const refreshAccessToken = async (data) => {
     try {
-        const response = await appClient.post('/token-veification', {}, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await appClient.post('/refresh-token', data)
         return response.data
     } catch (error) {
         throw error.response?.data?.error || "Something went wrong!";
+
     }
 }
 

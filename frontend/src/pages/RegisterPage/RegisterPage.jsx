@@ -74,9 +74,14 @@ const RegisterPage = () => {
       console.log(data)
       // POST-API Called on Button Click
       try {
-        const res = await registerUser(data)
-        setSnackbar({ open: true, msg: res.message, severity: 'success' });
-        setTimeout(() => navigate('/login'), 1500);
+        const res = await registerUser(data);
+        if (res.success) {
+          setSnackbar({ open: true, msg: res.message, severity: 'success' });
+          setTimeout(() => navigate('/login'), 1500);
+        } else {
+          setSnackbar({ open: true, msg: res.message, severity: 'error' });
+
+        }
       } catch (err) {
         setSnackbar({ open: true, msg: err, severity: 'error' });
       }

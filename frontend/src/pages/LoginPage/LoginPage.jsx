@@ -47,22 +47,27 @@ const LoginPage = () => {
 
   const handleLoginBtn = async (e) => {
     if (validateForm()) {
-      // GET-API Called on Button Click
+      // POST-API Called on Button Click
       try {
         const res = await loginUser(loginData);
-        setSnackbar({ open: true, msg: res.message, severity: 'success' });
+        if (res.success) {
+          Cookies.set("token", res.token, { secure: true, sameSite: "Strict" })
+          setSnackbar({ open: true, msg: res.message, severity: 'success' });
 
-        // Push the current state to prevent going back
-        window.history.replaceState(null, null, "/"); // Redirect to the homepage
-        window.history.pushState(null, null, "/"); // Add a new history state
-        window.addEventListener("popstate", (event) => {
-          if (Cookies.get("token")) {
-            // Redirect back to the homepage if the token exists
-            window.history.pushState(null, null, "/");
-          }
-        });
+          // Push the current state to prevent going back
+          window.history.replaceState(null, null, "/"); // Redirect to the homepage
+          window.history.pushState(null, null, "/"); // Add a new history state
+          window.addEventListener("popstate", (event) => {
+            if (Cookies.get("token")) {
+              // Redirect back to the homepage if the token exists
+              window.history.pushState(null, null, "/");
+            }
+          });
 
-        setTimeout(() => navigate('/'), 1500);
+          setTimeout(() => navigate('/'), 1500);
+        } else {
+          setSnackbar({ open: true, msg: res.message, severity: 'error' });
+        }
       } catch (err) {
         setSnackbar({ open: true, msg: err, severity: 'error' });
       }
@@ -107,7 +112,6 @@ const LoginPage = () => {
                   style={{ width: "100%", maxWidth: "400px", height: "auto", marginTop: "10px" }}
                 />
               </Grid>
-
 
               {/* Grid containing Login page Starts*/}
               <Grid size={{ xs: 12, sm: 12, lg: 7 }} sx={{

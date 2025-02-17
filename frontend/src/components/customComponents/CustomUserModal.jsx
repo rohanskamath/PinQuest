@@ -51,15 +51,15 @@ const CustomUserModal = ({ open, setOpen }) => {
                 <Divider />
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <CustomTypography sx={{ fontSize: "12px", fontWeight: "bold" }} marginTop='0px'>👤 Name:</CustomTypography>
-                    <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{userData.fullName}</CustomTypography>
+                    <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{userData.FullName}</CustomTypography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <CustomTypography sx={{ fontSize: "12px", fontWeight: "bold" }} marginTop='0px'>✉️ Email address:</CustomTypography>
-                    <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{userData.email}</CustomTypography>
+                    <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{userData.Email}</CustomTypography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <CustomTypography sx={{ fontSize: "12px", fontWeight: "bold" }} marginTop='0px'>🆔 Username:</CustomTypography>
-                    <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{userData.userName}</CustomTypography>
+                    <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{userData.Username}</CustomTypography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <CustomTypography sx={{ fontSize: "12px", fontWeight: "bold" }} marginTop='0px'>📍Current Location:</CustomTypography>

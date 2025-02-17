@@ -1,28 +1,60 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { verifyToken } from "../../services/authService";
 import ClipLoader from "react-spinners/ClipLoader";
+import { refreshAccessToken } from '../../services/authService';
+import { jwtDecode } from "jwt-decode";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const checkToken = async () => {
-    const token = Cookies.get("token");
+  const isTokenExpiringSoon = (cookieToken) => {
     try {
-      const res = await verifyToken(token);
-      if (res.success) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
-    } catch (err) {
-      console.error("Error verifying token:", err);
-      setIsAuthenticated(false);
-    } finally {
-      setLoading(false);
+      const decodedToken = jwtDecode(cookieToken);
+      const currentTime = Date.now() / 1000;
+      return decodedToken.exp - currentTime < 60;
+    } catch (error) {
+      return true;
     }
+  }
+
+  const refreshAccesToken = async (cookieToken) => {
+    const decodedToken = jwtDecode(cookieToken);
+    const userData = JSON.parse(decodedToken.UserData)
+    const data = {
+      Email: userData.Email,
+      RefreshToken: userData.RefreshToken
+    };
+    try {
+      const res = await refreshAccessToken(data)
+      const newToken=res.token;
+      Cookies.set("token", newToken, { secure: true, sameSite: "Strict" })
+      return true;
+    }
+    catch (err) {
+      console.error("Failed to refresh token:", err);
+    }
+  }
+
+  const checkToken = async () => {
+    const cookietoken = Cookies.get("token");
+    if (!cookietoken) {
+      setIsAuthenticated(false);
+      setLoading(false);
+      return;
+    }
+
+    if (isTokenExpiringSoon(cookietoken)) {
+      const refreshed = await refreshAccesToken(cookietoken);
+      if (!refreshed) {
+        setIsAuthenticated(false);
+        setLoading(false);
+        return;
+      }
+    }
+    setIsAuthenticated(true);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -39,7 +71,7 @@ const ProtectedRoute = ({ children }) => {
     return (
       <>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-          <ClipLoader color="#4A90E2" loading={loading} size={100} />
+          <ClipLoader color="#4A90E2" loading={loading} size={50} />
         </div>
       </>
     );

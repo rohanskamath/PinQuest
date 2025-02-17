@@ -38,10 +38,11 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
                 existingUser.RefreshToken = refreshToken;
                 existingUser.RefreshTokenExpiry = DateTime.UtcNow.AddDays(5);
 
+                await _userRepository.UpdateUserAsync(existingUser);
+
                 var userData = _mapper.Map<UserDTO>(existingUser);
 
                 var tokenString = _tokenCreationHelper.GenerateJwtToken(userData);
-                _tokenCreationHelper.SetAuthCookie("token", tokenString);
 
                 return new
                 {
