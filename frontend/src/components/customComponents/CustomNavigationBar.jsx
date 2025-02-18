@@ -19,7 +19,7 @@ import CustomTypography from '../../components/customFormControls/CustomTypograp
 import CustomSnackbar from './CustomSnackbar';
 import CustomUserModal from './CustomUserModal';
 import { searchLocation } from '../../services/locationService';
-import { setLocation, setPlaceName } from '../../redux/slices/locationSlice';
+import { setLocation, setPlaceName, clearLocationData } from '../../redux/slices/locationSlice';
 import { clearUserData } from '../../redux/slices/userSlice'
 import { useNavigate } from 'react-router-dom';
 
@@ -131,6 +131,7 @@ const CustomNavigationBar = ({ placeName }) => {
         setSnackbar({ open: true, msg: 'Logging out', severity: 'success' });
         Cookies.remove("token");
         dispatch(clearUserData());
+        dispatch(clearLocationData());
         handleMenuClose();
     }
 

@@ -11,8 +11,6 @@ const Main = () => {
   const dispatch = useDispatch();
 
   const location = useSelector((state) => state.location.location)
-  const token = Cookies.get("token")
-
   const successCallback = (position) => {
     const newLocation = {
       lat: position.coords.latitude,
@@ -27,10 +25,7 @@ const Main = () => {
 
   useEffect(() => {
 
-    if (navigator.geolocation && token) {
-      const tokenResponse = jwtDecode(token);
-      const userData=JSON.parse(tokenResponse.UserData)
-      dispatch(setUserData(userData))
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     } else {
       console.log("Geolocation is not supported by this browser.");

@@ -20,13 +20,10 @@ const ProtectedRoute = ({ children }) => {
   }
 
   const refreshAccesToken = async (cookieToken) => {
-    const decodedToken = jwtDecode(cookieToken);
-    const userData = JSON.parse(decodedToken.UserData)
-    const data = {
-      Email: userData.Email,
-      RefreshToken: userData.RefreshToken
-    };
     try {
+      const data={
+        accessToken:cookieToken
+      }
       const res = await refreshAccessToken(data)
       const newToken = res.token;
       Cookies.set("token", newToken, { HttpOnly: false, secure: true, sameSite: "Strict", Path: "/" })

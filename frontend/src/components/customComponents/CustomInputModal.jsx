@@ -24,7 +24,6 @@ const CustomInputModal = ({ open, setOpen, anchorPosition, callbackPins }) => {
 
     const id = open ? 'custom-popover' : undefined;
 
-
     const handleSubmitReview = async () => {
 
         if (!placeName || !selectedCategory || !review || rating === 0) {
@@ -33,12 +32,12 @@ const CustomInputModal = ({ open, setOpen, anchorPosition, callbackPins }) => {
         }
         const data = {
             title: placeName,
-            desc: review,
+            description: review,
             category: selectedCategory,
             rating: rating,
-            lat: location.lat,
-            long: location.lng,
-            email: userInfo.email
+            latitude: location.lat,
+            longitude: location.lng,
+            userId: userInfo.UserId
         }
         try {
             const res = await addNewPin(data);

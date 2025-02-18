@@ -64,26 +64,23 @@ const CustomMapBox = ({ location }) => {
 
             // Grouping reviews for the same location and calculating the average
             const groupedPins = res.data.reduce((review, pin) => {
-                const key = `${pin.lat},${pin.long}`;
-
+                const key = `${pin.latitude},${pin.longitude}`;
                 if (!review[key]) {
                     review[key] = {
                         ...pin,
-                        reviews: [{ desc: pin.desc, email: pin.email, rating: pin.rating, category: pin.category }],
+                        reviews: [{ description: pin.description, username: pin.username, rating: pin.rating, category: pin.category }],
                         ratingSum: pin.rating,
                         reviewCount: 1,
                         avgRating: pin.rating.toFixed(1),
                     };
                 } else {
-                    review[key].reviews.push({ desc: pin.desc, email: pin.email, rating: pin.rating, category: pin.category });
+                    review[key].reviews.push({ description: pin.description, username: pin.username, rating: pin.rating, category: pin.category });
                     review[key].ratingSum += pin.rating;
                     review[key].reviewCount += 1;
                     review[key].avgRating = (review[key].ratingSum / review[key].reviewCount).toFixed(1)
                 }
                 return review;
             }, {});
-
-            console.log("hello", Object.values(groupedPins))
 
             setPins(Object.values(groupedPins));
             setSnackbar({ open: true, msg: res.message, severity: 'success' });
@@ -100,8 +97,8 @@ const CustomMapBox = ({ location }) => {
 
         if (pins && pins.length > 0) {
             pins.forEach((pin) => {
-                const latitude = parseFloat(pin.lat);
-                const longitude = parseFloat(pin.long);
+                const latitude = parseFloat(pin.latitude);
+                const longitude = parseFloat(pin.longitude);
 
                 let markerColor;
                 switch (pin.category.toLowerCase()) {

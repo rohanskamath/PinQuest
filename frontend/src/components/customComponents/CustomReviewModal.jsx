@@ -3,7 +3,6 @@ import Popover from '@mui/material/Popover';
 import { Box, Stack } from '@mui/material';
 import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
 import CustomTypography from '../customFormControls/CustomTypography';
-import { createUserName } from '../../services/authService';
 
 const CustomReviewModal = ({ open, setOpen, anchorPosition, pin }) => {
 
@@ -73,11 +72,13 @@ const CustomReviewModal = ({ open, setOpen, anchorPosition, pin }) => {
                                     padding: "0 6px 0 0"
                                 }}>
                                     {
+                                        
                                         pin.reviews.map((review, index) => {
+                                            console.log(pin);
                                             return (
                                                 <Stack key={index}>
                                                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                                                        <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{createUserName(review?.email)}</CustomTypography>
+                                                        <CustomTypography sx={{ fontSize: "12px" }} marginTop='0px'>{review?.username}</CustomTypography>
                                                         <CustomTypography sx={{ fontSize: "12px", fontWeight: "bold" }} marginTop='0px'>{review?.category}</CustomTypography>
                                                         <Box
                                                             sx={{
@@ -99,7 +100,7 @@ const CustomReviewModal = ({ open, setOpen, anchorPosition, pin }) => {
                                                         border: "1px solid #ccc",
                                                         borderRadius: "5px"
                                                     }}>
-                                                        <CustomTypography sx={{ fontSize: "12px", padding: "2px 4px" }} marginTop='0px'>{review?.desc}</CustomTypography>
+                                                        <CustomTypography sx={{ fontSize: "12px", padding: "2px 4px" }} marginTop='0px'>{review?.description}</CustomTypography>
                                                     </Box>
                                                 </Stack>
                                             )
