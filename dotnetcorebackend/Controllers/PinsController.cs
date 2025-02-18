@@ -1,6 +1,7 @@
 ﻿using dotnetcorebackend.Application.Services.Pinservice.Commands;
 using dotnetcorebackend.Application.Services.Pinservice.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

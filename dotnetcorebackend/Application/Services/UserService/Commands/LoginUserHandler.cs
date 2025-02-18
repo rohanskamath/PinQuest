@@ -34,14 +34,18 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
                     return new { success = false, message = "Invalid Username/Password!", };
                 }
 
-                var refreshToken = _tokenCreationHelper.GenerateRefreshToken();
-                existingUser.RefreshToken = refreshToken;
-                existingUser.RefreshTokenExpiry = DateTime.UtcNow.AddDays(5);
+                if (string.IsNullOrEmpty(existingUser.RefreshToken.ToString()) || existingUser.RefreshTokenExpiry < DateTime.UtcNow)
+                {
+                    var refreshToken = _tokenCreationHelper.GenerateRefreshToken();
+                    existingUser.RefreshToken = refreshToken;
+                    existingUser.RefreshTokenExpiry = DateTime.UtcNow.AddDays(5);
+                    await _userRepository.UpdateUserAsync(existingUser);
+                }
 
+                existingUser.RefreshTokenExpiry = DateTime.UtcNow.AddDays(5);
                 await _userRepository.UpdateUserAsync(existingUser);
 
                 var userData = _mapper.Map<UserDTO>(existingUser);
-
                 var tokenString = _tokenCreationHelper.GenerateJwtToken(userData);
 
                 return new

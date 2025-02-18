@@ -20,7 +20,7 @@ namespace dotnetcorebackend.Application.Helpers
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>
             {
-               new Claim(JwtRegisteredClaimNames.Sub, userData.Email),
+               new Claim(JwtRegisteredClaimNames.Sub, userData.UserId.ToString()),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                new Claim("UserData",JsonSerializer.Serialize(userData)),
             };

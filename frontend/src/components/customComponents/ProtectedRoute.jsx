@@ -28,8 +28,8 @@ const ProtectedRoute = ({ children }) => {
     };
     try {
       const res = await refreshAccessToken(data)
-      const newToken=res.token;
-      Cookies.set("token", newToken, { secure: true, sameSite: "Strict" })
+      const newToken = res.token;
+      Cookies.set("token", newToken, { HttpOnly: false, secure: true, sameSite: "Strict", Path: "/" })
       return true;
     }
     catch (err) {

@@ -11,12 +11,12 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: { xs: '90%', sm: '60%', md: '40%' }, // Responsive width
+    width: { xs: '90%', sm: '60%', md: '40%' },
     bgcolor: 'background.paper',
     borderRadius: '12px',
     boxShadow: 24,
     p: 4,
-    background: 'linear-gradient(135deg, #f9f9f9, #e0e0e0)', // Subtle gradient
+    background: 'linear-gradient(135deg, #f9f9f9, #e0e0e0)',
     display: 'flex',
     flexDirection: 'column',
     gap: 2,
