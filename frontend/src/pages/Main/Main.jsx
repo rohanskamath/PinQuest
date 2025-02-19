@@ -1,20 +1,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { jwtDecode } from "jwt-decode";
-import Cookies from "js-cookie";
 import CustomMapBox from '../../components/customComponents/CustomMapBox';
 import { fetchLocationName } from '../../services/locationService';
 import { setLocation, setPlaceName } from '../../redux/slices/locationSlice';
-import { setUserData } from '../../redux/slices/userSlice'
 
 const Main = () => {
   const dispatch = useDispatch();
 
   const location = useSelector((state) => state.location.location)
+
   const successCallback = (position) => {
     const newLocation = {
       lat: position.coords.latitude,
-      lng: position.coords.longitude
+      lng: position.coords.longitude,
     }
     dispatch(setLocation(newLocation))
   }
@@ -24,7 +22,6 @@ const Main = () => {
   }
 
   useEffect(() => {
-
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     } else {
@@ -47,8 +44,10 @@ const Main = () => {
         }
       }
     }
-
-    fetchPlaceName()
+    if(location!=null)
+    {
+      fetchPlaceName()
+    }
   }, [location, dispatch])
 
   return (

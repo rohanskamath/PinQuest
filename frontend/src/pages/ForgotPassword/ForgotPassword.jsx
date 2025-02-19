@@ -1,5 +1,5 @@
 import { Avatar, Box, Stack } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import bgImg from '../../assets/bg-image.jpg';
 import CustomStyledBox from '../../components/customComponents/CustomStyledBox';
 import CustomTextField from '../../components/customFormControls/CustomTextField';
@@ -13,15 +13,24 @@ import animationData from '../../assets/ForgotPassword.json'
 import CustomTypography from '../../components/customFormControls/CustomTypography';
 import CustomButton from '../../components/customFormControls/CustomButton';
 import { useNavigate } from 'react-router-dom';
+import { changePassword, sendOTP, verifyOTP } from '../../services/authService';
+import CustomSnackbar from '../../components/customComponents/CustomSnackbar';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [newpassword, setNewPassword] = useState({
+    password: '',
+    confirmPassword: ''
+  });
   const [errors, setErrors] = useState({})
   const [otpSent, setOtpSent] = useState(false);
   const [isOtpValid, setIsOtpValid] = useState(false);
   const [otpError, setOtpError] = useState(false);
   const [otp, setOtp] = useState(['', '', '', '']);
+  const [timer, setTimer] = useState(60);
+  const otpRefs = useRef([]);
+  const [snackbar, setSnackbar] = useState({ open: false, msg: '', severity: 'success' });
 
   const validateForm = () => {
     const newErrors = {};
@@ -32,33 +41,127 @@ const ForgotPassword = () => {
     return Object.keys(newErrors).length === 0;
   }
 
-  const handleVerifyBtn = () => {
+  const handleVerifyBtn = async () => {
     if (validateForm()) {
-      console.log(`OTP sent tp: ${email}`)
-      setOtpSent(true)
+      try {
+        const data = {
+          email: email
+        }
+        const res = await sendOTP(data);
+        if (res.success) {
+          setSnackbar({ open: true, msg: res.message, severity: 'success' });
+          setOtpSent(true)
+        } else {
+          setOtpSent(false)
+          setSnackbar({ open: true, msg: res.message, severity: 'error' });
+        }
+      }
+      catch (error) {
+        setSnackbar({ open: true, msg: error, severity: 'error' });
+        setOtpSent(false)
+      }
     }
   }
 
   const handleOtpChange = (index, value) => {
+    if (value && !/^\d{1}$/.test(value)) return
+
     const updatedOtp = [...otp];
-    if (value && !/^\d{1}$/.test(value)) {
-      // Do Nothing
-    } else {
-      setOtpError(false)
-      updatedOtp[index] = value;
-      setOtp(updatedOtp)
+    setOtpError(false)
+    updatedOtp[index] = value;
+    setOtp(updatedOtp)
+
+    if(value && index <3){
+      otpRefs.current[index+1]?.focus();
     }
   }
 
-  const handleOtpVerify = () => {
+  const handleOtpVerify = async () => {
     const enteredOtp = otp.join('');
-    if (enteredOtp === '1234') {
-      setIsOtpValid(true);
-      setOtpError(false)
-    } else {
+    try {
+      const data = {
+        email: email,
+        otp: enteredOtp
+      };
+      const res = await verifyOTP(data)
+      if (res.success) {
+        setSnackbar({ open: true, msg: res.message, severity: 'success' });
+        setTimer(60);
+        setOtp(["", "", "", ""]);
+        setIsOtpValid(true);
+        setOtpError(false);
+      } else {
+        setOtpError(true)
+      }
+    } catch (error) {
+      setSnackbar({ open: true, msg: error, severity: 'success' });
       setOtpError(true)
     }
   }
+
+  useEffect(() => {
+    let countdown;
+    if (otpSent && timer > 0) {
+      countdown = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1)
+      }, 1000);
+    } else if (timer === 0) {
+      clearInterval(countdown)
+    }
+
+    return () => clearInterval(countdown)
+  }, [otpSent, timer])
+
+  const formatTimer = (time) => {
+    const minutes = Math.floor(timer / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+
+  const handleResendOTP = async () => {
+    try {
+      const data = {
+        email: email
+      }
+      const res = await sendOTP(data);
+      if (res.success) {
+        setSnackbar({ open: true, msg: res.message, severity: 'success' });
+        setTimer(60)
+        setOtp(["", "", "", ""]);
+        setOtpSent(true);
+        setIsOtpValid(false);
+        setOtpError(false);
+      }
+    }
+    catch (error) {
+      setSnackbar({ open: true, msg: error, severity: 'error' });
+    }
+  };
+
+  const handleChangePassword = async () => {
+    try {
+      const data = {
+        email: email,
+        newPassword: newpassword.password
+      }
+      const res=await changePassword(data)
+      if(res.success)
+      {
+        setSnackbar({ open: true, msg: res.message, severity: 'success' });
+        setTimeout(() => navigate('/login'), 1500);
+      } else {
+        setSnackbar({ open: true, msg: res.message, severity: 'error' });
+      }
+    }
+    catch (error) {
+      setSnackbar({ open: true, msg: error, severity: 'error' });
+    }
+  }
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   return (
     <>
       <Box
@@ -127,7 +230,7 @@ const ForgotPassword = () => {
                   </Stack>
 
                   {otpSent && !isOtpValid && (
-                    <Stack  width="100%" padding={{ xs: "10px 0 20px 20px", sm: "10px 0 20px 60px" }}>
+                    <Stack width="100%" padding={{ xs: "10px 0 20px 20px", sm: "10px 0 20px 60px" }}>
                       <CustomTypography sx={{ fontSize: { xs: "7px", sm: "10px" } }}>
                         Enter the OTP sent to your email
                       </CustomTypography>
@@ -136,6 +239,7 @@ const ForgotPassword = () => {
                           {otp.map((value, index) => (
                             <CustomTextField
                               autoComplete="off"
+                              inputRef={(el) => (otpRefs.current[index] = el)}
                               error={otpError}
                               key={index}
                               value={value}
@@ -146,12 +250,15 @@ const ForgotPassword = () => {
                           ))}
                         </Stack>
                         <CustomTypography
-                          className="flip-label" onClick={handleOtpVerify}
+                          className="flip-label" onClick={timer === 0 ? handleResendOTP : handleOtpVerify}
                           sx={{ color: "blue", fontSize: { xs: "9px", sm: "12px" }, marginLeft: { xs: "5px", sm: "10px" } }}
                         >
-                          Verify
+                          {timer === 0 ? "Resend" : "Verify"}
                         </CustomTypography>
                       </div>
+                      <CustomTypography sx={{ fontSize: { xs: "7px", sm: "10px" } }}>
+                        Time remaining: {formatTimer(timer)}
+                      </CustomTypography>
                     </Stack>
                   )}
 
@@ -162,13 +269,17 @@ const ForgotPassword = () => {
                         label={'New Password'}
                         autoFocus
                         type="password"
+                        value={newpassword.password}
+                        onChange={(e) => { setNewPassword({ ...newpassword, password: e.target.value }) }}
                       />
                       <CustomTextField
                         icon={<EnhancedEncryptionOutlinedIcon />}
                         label={'Confirm Password'}
                         type="password"
+                        value={newpassword.confirmPassword}
+                        onChange={(e) => { setNewPassword({ ...newpassword, confirmPassword: e.target.value }) }}
                       />
-                      <CustomButton>
+                      <CustomButton onClick={handleChangePassword}>
                         Reset Password
                       </CustomButton>
                     </Stack>
@@ -179,6 +290,13 @@ const ForgotPassword = () => {
           </Box>
         </CustomStyledBox>
       </Box>
+      {/* Custom Snackbar to display messages */}
+      <CustomSnackbar
+        open={snackbar.open}
+        onClose={handleCloseSnackbar}
+        severity={snackbar.severity}
+        msg={snackbar.msg}
+      />
     </>
   );
 }

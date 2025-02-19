@@ -30,8 +30,8 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
                 // Generate OTP
                 var otp = GenerateOtp();
 
-                // Store OTP in cahche with 2-min expiry
-                _cache.Set(request.Email, otp, TimeSpan.FromMinutes(2));
+                // Store OTP in cahche with 1-min expiry
+                _cache.Set(request.Email, otp, TimeSpan.FromMinutes(1));
 
                 // Send OTP to Users provided email
                 var htmlContent = $@"

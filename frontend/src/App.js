@@ -11,17 +11,14 @@ import { CssBaseline } from "@mui/material";
 import ProtectedRoute from "./components/customComponents/ProtectedRoute";
 import Layout from "./pages/Layout";
 import VisitsPage from "./pages/VisitsPage/VisitsPage";
-import { setUserData } from "./redux/slices/userSlice";
+import { retriveUserData } from "./services/authService";
 
 const App = () => {
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const token = Cookies.get("token");
     if (token) {
-      const tokenResponse = jwtDecode(token);
-      const userData = JSON.parse(tokenResponse.UserData);
-      dispatch(setUserData(userData));
+      retriveUserData(token)
     }
   }, []);
 

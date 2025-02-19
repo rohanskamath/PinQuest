@@ -15,6 +15,7 @@ import CustomButton from '../../components/customFormControls/CustomButton';
 import { loginUser } from '../../services/authService';
 import CustomSnackbar from '../../components/customComponents/CustomSnackbar';
 import Cookies from "js-cookie";
+import { retriveUserData } from '../../services/authService';
 
 const LoginPage = () => {
   const [isAnimating, setIsAnimating] = useState(false);
@@ -23,6 +24,7 @@ const LoginPage = () => {
     email: "",
     password: ""
   })
+
   const [errors, setErrors] = useState({})
   const [snackbar, setSnackbar] = useState({ open: false, msg: '', severity: 'success' });
 
@@ -53,6 +55,8 @@ const LoginPage = () => {
         if (res.success) {
           Cookies.set("token", res.token, { secure: true, sameSite: "Strict" })
           setSnackbar({ open: true, msg: res.message, severity: 'success' });
+
+          retriveUserData(res.token)
 
           // Push the current state to prevent going back
           window.history.replaceState(null, null, "/"); // Redirect to the homepage

@@ -1,4 +1,7 @@
 import appClient from './appClient'
+import { jwtDecode } from "jwt-decode";
+import { store } from "../redux/store/store";
+import { setUserData } from '../redux/slices/userSlice';
 
 /* POST API - Registration */
 export const registerUser = async (data) => {
@@ -20,6 +23,7 @@ export const loginUser = async (data) => {
     }
 }
 
+/* POST API - To Refresh Token */
 export const refreshAccessToken = async (data) => {
     try {
         const response = await appClient.post('/refresh-token', data)
@@ -27,6 +31,39 @@ export const refreshAccessToken = async (data) => {
     } catch (error) {
         throw error.response?.data?.error || "Something went wrong!";
 
+    }
+}
+
+/* POST API - To send OTP */
+export const sendOTP = async (data) => {
+    try {
+        const response = await appClient.post('/send-otp', data)
+        return response.data
+    }
+    catch (error) {
+        throw error.response?.data?.error || "Something went wrong!";
+    }
+}
+
+/* POST API - To verify OTP */
+export const verifyOTP = async (data) => {
+    try {
+        const response = await appClient.post('/verify-otp', data)
+        return response.data
+    }
+    catch (error) {
+        throw error.response?.data?.error || "Something went wrong!";
+    }
+}
+
+/* PUT API - To change password */
+export const changePassword = async (data) => {
+    try {
+        const response = await appClient.put('/change-password', data)
+        return response.data
+    }
+    catch (error) {
+        throw error.response?.data?.error || "Something went wrong!";
     }
 }
 
@@ -48,4 +85,11 @@ export const createUserName = (email) => {
         uname = email.slice(0, email.indexOf('@'))
     }
     return uname;
+}
+
+/* Extract userData from token */
+export const retriveUserData = (token) => {
+    const tokenResponse = jwtDecode(token);
+    const userData = JSON.parse(tokenResponse.UserData);
+    store.dispatch(setUserData(userData));
 }

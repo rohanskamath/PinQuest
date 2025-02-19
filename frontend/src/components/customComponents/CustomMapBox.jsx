@@ -24,7 +24,8 @@ const CustomMapBox = ({ location }) => {
     maptilersdk.config.apiKey = process.env.REACT_APP_MAPTILER_API_KEY;
 
     useEffect(() => {
-        if (!map.current) {
+        if (!map.current && !(location === null)) {
+            
             // Initialize the map only once
             map.current = new maptilersdk.Map({
                 container: mapContainer.current,
@@ -45,11 +46,13 @@ const CustomMapBox = ({ location }) => {
             markerElement.addEventListener('dblclick', handleMarkerDoubleClick)
 
         } else {
-            // Update map center and marker position when location changes
-            map.current.setCenter([location.lng, location.lat]);
+            if (location != null) {
+                // Update map center and marker position when location changes
+                map.current?.setCenter([location.lng, location.lat]);
 
-            if (marker.current) {
-                marker.current.setLngLat([location.lng, location.lat]);
+                if (marker.current) {
+                    marker.current.setLngLat([location.lng, location.lat]);
+                }
             }
         }
     }, [location]);
