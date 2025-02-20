@@ -12,6 +12,7 @@ const CustomMapBox = ({ location }) => {
     const marker = useRef(null);
     const zoom = 16;
     const markers = useRef([]);
+    const [route, setRoute] = useState(null);
 
     const [anchorPosition, setAnchorPosition] = useState(null);
     const [pins, setPins] = useState([]);
@@ -25,7 +26,7 @@ const CustomMapBox = ({ location }) => {
 
     useEffect(() => {
         if (!map.current && !(location === null)) {
-            
+
             // Initialize the map only once
             map.current = new maptilersdk.Map({
                 container: mapContainer.current,
@@ -190,6 +191,58 @@ const CustomMapBox = ({ location }) => {
         }
     };
 
+    const getDirections = async (destination) => {
+        if (!map.current) return;
+
+        const start = `${location.lng},${location.lat}`;
+        const end = `${destination.longitude},${destination.latitude}`;
+
+        const url = `https://api.maptiler.com/routes/driving/${start};${end}?key=${process.env.REACT_APP_MAPTILER_API_KEY}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.routes.length > 0) {
+                const coordinates = data.routes[0].geometry.coordinates;
+
+                if (map.current.getSource('route')) {
+                    map.current.removeLayer('route');
+                    map.current.removeSource('route');
+                }
+
+                map.current.addSource('route', {
+                    type: 'geojson',
+                    data: {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: coordinates
+                        }
+                    }
+                });
+
+                map.current.addLayer({
+                    id: 'route',
+                    type: 'line',
+                    source: 'route',
+                    layout: {
+                        'line-cap': 'round',
+                        'line-join': 'round'
+                    },
+                    paint: {
+                        'line-color': '#007AFF',
+                        'line-width': 5
+                    }
+                });
+
+                setRoute(coordinates);
+            }
+        } catch (error) {
+            console.error("Error fetching directions:", error);
+        }
+    };
+
     const handleCloseSnackbar = () => {
         setSnackbar({ ...snackbar, open: false });
     };
@@ -205,6 +258,7 @@ const CustomMapBox = ({ location }) => {
                     open={showReviewModal}
                     setOpen={setShowReviewModal}
                     anchorPosition={{ top: anchorPosition.top, left: anchorPosition.left }}
+                    getDirections={getDirections}
                 />
             )}
 

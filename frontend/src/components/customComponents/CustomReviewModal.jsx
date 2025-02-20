@@ -4,7 +4,7 @@ import { Box, Stack } from '@mui/material';
 import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
 import CustomTypography from '../customFormControls/CustomTypography';
 
-const CustomReviewModal = ({ open, setOpen, anchorPosition, pin }) => {
+const CustomReviewModal = ({ open, setOpen, anchorPosition, pin, getDirections }) => {
 
     const handleClose = () => {
         setOpen(false);
@@ -65,6 +65,7 @@ const CustomReviewModal = ({ open, setOpen, anchorPosition, pin }) => {
                                     </Box>
                                 </Box>
                                 <CustomTypography sx={{ fontSize: "12px", color: "#660033", fontWeight: "bold" }} marginTop='0px'>Reviews:</CustomTypography>
+                                <CustomTypography sx={{ fontSize: "10px", color: "blue", textDecoration:'underline', cursor:"pointer" }} marginTop='0px' onClick={()=>{getDirections(pin)}}>Show directions</CustomTypography>
                                 <Box sx={{
                                     maxHeight: "100px",
                                     overflowY: "auto",
