@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }) => {
     try {
       const decodedToken = jwtDecode(cookieToken);
       const currentTime = Date.now() / 1000;
-      return decodedToken.exp - currentTime < 60;
+      return decodedToken.exp - currentTime < 3;
     } catch (error) {
       return true;
     }
@@ -59,7 +59,7 @@ const ProtectedRoute = ({ children }) => {
 
     const intervalId = setInterval(() => {
       checkToken();
-    }, 5000)
+    }, 3000)
 
     return () => clearInterval(intervalId)
   }, []);

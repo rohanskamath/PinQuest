@@ -121,6 +121,8 @@ app.UseCors("corspolicy");
 // Use User activity Middleware
 app.UseMiddleware<UserActivityMiddleware>();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

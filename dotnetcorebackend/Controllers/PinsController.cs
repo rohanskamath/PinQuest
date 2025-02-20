@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetcorebackend.Controllers
 {
+    [Authorize]
     [Route("api")]
     [ApiController]
     public class PinsController : ControllerBase
