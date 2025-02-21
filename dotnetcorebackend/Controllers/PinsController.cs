@@ -13,6 +13,7 @@ namespace dotnetcorebackend.Controllers
     public class PinsController : ControllerBase
     {
         private readonly IMediator _mediator;
+
         public PinsController(IMediator mediator)
         {
             _mediator = mediator;

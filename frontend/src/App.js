@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Cookies from "js-cookie";
-import { useDispatch } from "react-redux";
-import { jwtDecode } from "jwt-decode";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";

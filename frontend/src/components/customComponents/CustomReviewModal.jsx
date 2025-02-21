@@ -75,7 +75,6 @@ const CustomReviewModal = ({ open, setOpen, anchorPosition, pin, getDirections }
                                     {
                                         
                                         pin.reviews.map((review, index) => {
-                                            console.log(pin);
                                             return (
                                                 <Stack key={index}>
                                                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
