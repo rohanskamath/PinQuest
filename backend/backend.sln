@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnetcorebackend", "dotnetcorebackend.csproj", "{103C531B-7E04-43FF-8BD5-739BCE46610E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend", "backend.csproj", "{103C531B-7E04-43FF-8BD5-739BCE46610E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend.test", "..\backend.test\backend.test.csproj", "{A15AB023-9FA0-42ED-BADA-F66483C46121}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{103C531B-7E04-43FF-8BD5-739BCE46610E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{103C531B-7E04-43FF-8BD5-739BCE46610E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{103C531B-7E04-43FF-8BD5-739BCE46610E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A15AB023-9FA0-42ED-BADA-F66483C46121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A15AB023-9FA0-42ED-BADA-F66483C46121}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A15AB023-9FA0-42ED-BADA-F66483C46121}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A15AB023-9FA0-42ED-BADA-F66483C46121}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
