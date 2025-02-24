@@ -28,7 +28,7 @@ namespace dotnetcorebackend.Application.Helpers
                     issuer: _configuration["Jwt:Issuer"],
                     audience: _configuration["Jwt:Audience"],
                     claims: claims,
-                    expires: DateTime.UtcNow.AddSeconds(5),
+                    expires: DateTime.UtcNow.AddMinutes(5),
                     signingCredentials: credentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);

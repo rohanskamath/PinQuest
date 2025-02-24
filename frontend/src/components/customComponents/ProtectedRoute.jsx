@@ -2,23 +2,28 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import ClipLoader from "react-spinners/ClipLoader";
-import { refreshAccessToken } from '../../services/authService';
 import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { refreshAccessToken } from '../../services/authService';
+import { clearUserData } from "../../redux/slices/userSlice";
 
 const ProtectedRoute = ({ children }) => {
+  const dispatch=useDispatch();
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Checks if JWT Token is expired
   const isTokenExpiringSoon = (cookieToken) => {
     try {
       const decodedToken = jwtDecode(cookieToken);
       const currentTime = Date.now() / 1000;
-      return decodedToken.exp - currentTime < 3;
+      return decodedToken.exp - currentTime < 60;
     } catch (error) {
       return true;
     }
   }
 
+  // Function to refresh the token
   const refreshAccesToken = async (cookieToken) => {
     try {
       const data={
@@ -59,9 +64,11 @@ const ProtectedRoute = ({ children }) => {
 
     const intervalId = setInterval(() => {
       checkToken();
-    }, 3000)
+    }, 3000);
 
-    return () => clearInterval(intervalId)
+    return () => {
+      clearInterval(intervalId);
+    }
   }, []);
 
   if (loading) {
@@ -75,6 +82,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!isAuthenticated) {
+    dispatch(clearUserData())
     return <Navigate to="/login" />;
   }
 

@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers.test\" />
+    <Folder Include="Services.test\UserService.test\" />
   </ItemGroup>
 
   <ItemGroup>
