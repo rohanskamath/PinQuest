@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace backend.test.Middleware
+namespace backend.test.Middleware.test
 {
     public class UserActivityMiddlewareTests
     {
