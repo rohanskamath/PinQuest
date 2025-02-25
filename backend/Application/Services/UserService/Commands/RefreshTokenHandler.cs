@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using backend.Application.Helpers;
 using dotnetcorebackend.Application.DTOs.UserDTOs;
 using dotnetcorebackend.Application.Helpers;
 using dotnetcorebackend.Application.Repositories.UserRepository;
@@ -16,9 +17,9 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
-        private readonly TokenCreationHelper _tokenCreationHelper;
+        private readonly ITokenHelper _tokenCreationHelper;
 
-        public RefreshTokenHandler(IUserRepository userRepository, IMapper mapper, IConfiguration configuration, TokenCreationHelper tokenCreationHelper)
+        public RefreshTokenHandler(IUserRepository userRepository, IMapper mapper, IConfiguration configuration, ITokenHelper tokenCreationHelper)
         {
             _userRepository = userRepository;
             _mapper = mapper;

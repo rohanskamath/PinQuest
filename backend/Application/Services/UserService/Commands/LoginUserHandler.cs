@@ -4,6 +4,7 @@ using dotnetcorebackend.Application.Repositories.UserRepository;
 using dotnetcorebackend.Models;
 using dotnetcorebackend.Application.Helpers;
 using MediatR;
+using backend.Application.Helpers;
 
 namespace dotnetcorebackend.Application.Services.UserService.Commands
 {
@@ -11,8 +12,8 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly TokenCreationHelper _tokenCreationHelper;
-        public LoginUserHandler(IUserRepository userRepository, IMapper mapper, TokenCreationHelper tokenCreationHelper)
+        private readonly ITokenHelper _tokenCreationHelper;
+        public LoginUserHandler(IUserRepository userRepository, IMapper mapper, ITokenHelper tokenCreationHelper)
         {
             _userRepository = userRepository;
             _mapper = mapper;

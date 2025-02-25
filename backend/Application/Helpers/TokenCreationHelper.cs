@@ -1,4 +1,5 @@
-﻿using dotnetcorebackend.Application.DTOs.UserDTOs;
+﻿using backend.Application.Helpers;
+using dotnetcorebackend.Application.DTOs.UserDTOs;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -7,14 +8,14 @@ using System.Text.Json;
 
 namespace dotnetcorebackend.Application.Helpers
 {
-    public class TokenCreationHelper
+    public class TokenCreationHelper : ITokenHelper
     {
         private readonly IConfiguration _configuration;
         public TokenCreationHelper(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-        public string GenerateJwtToken(UserDTO userData)
+        public virtual string GenerateJwtToken(UserDTO userData)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
