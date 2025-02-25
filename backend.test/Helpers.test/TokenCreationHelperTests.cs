@@ -24,7 +24,7 @@ namespace backend.test.Helpers.test
         }
 
         /// <summary>
-        /// Tests that the GenerateJwtToken method returns a valid JWT token.
+        /// TC001:- Tests that the GenerateJwtToken method returns a valid JWT token.
         /// </summary>
         [Fact]
         public void GenerateTokenTest()
@@ -46,7 +46,7 @@ namespace backend.test.Helpers.test
         }
 
         /// <summary>
-        /// Tests that the GenerateRefreshToken method returns a non-empty Guid.
+        /// TC002:- Tests that the GenerateRefreshToken method returns a non-empty Guid.
         /// </summary>
         [Fact]
         public void GenerateRefreshTokenTest()
