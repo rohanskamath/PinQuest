@@ -2,7 +2,6 @@
 using dotnetcorebackend.Application.Services.Pinservice.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetcorebackend.Controllers
@@ -38,8 +37,8 @@ namespace dotnetcorebackend.Controllers
         {
             try
             {
-                var pins = await _mediator.Send(new GetAllPinsQuery());
-                return Ok(new { success = true, message = "Pins fetched successfully!", data = pins });
+                var response = await _mediator.Send(new GetAllPinsQuery());
+                return Ok(response);
             }
             catch (Exception ex)
             {

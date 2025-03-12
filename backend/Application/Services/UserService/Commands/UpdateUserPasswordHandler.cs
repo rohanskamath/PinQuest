@@ -23,7 +23,7 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
                 }
                 existingUser.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
                 bool result = await _userRepository.UpdateUserAsync(existingUser);
-                return true;
+                return new { success = true, message = "Password changed sucessfully!" };
             }
             catch (Exception ex)
             {

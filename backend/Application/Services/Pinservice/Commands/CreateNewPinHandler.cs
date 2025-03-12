@@ -3,10 +3,11 @@ using dotnetcorebackend.Application.DTOs.PinDTOs;
 using dotnetcorebackend.Application.Repositories.PinsRepository;
 using dotnetcorebackend.Models;
 using MediatR;
+using System.Net.NetworkInformation;
 
 namespace dotnetcorebackend.Application.Services.Pinservice.Commands
 {
-    public class CreateNewPinHandler : IRequestHandler<CreateNewPinCommand, PinDTO>
+    public class CreateNewPinHandler : IRequestHandler<CreateNewPinCommand, object?>
     {
         private readonly IPinsRepository _pinsRepository;
         private readonly IMapper _mapper;
@@ -16,7 +17,7 @@ namespace dotnetcorebackend.Application.Services.Pinservice.Commands
             _mapper = mapper;
         }
 
-        public async Task<PinDTO> Handle(CreateNewPinCommand request, CancellationToken cancellationToken)
+        public async Task<object?> Handle(CreateNewPinCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -44,7 +45,7 @@ namespace dotnetcorebackend.Application.Services.Pinservice.Commands
 
                 // Convert Pin Model to PinDTO
                 var pinDTO = _mapper.Map<PinDTO>(newPin);
-                return pinDTO;
+                return new { success = true, message = "Pins fetched successfully!", data = pinDTO };
             }
             catch (Exception ex)
             {

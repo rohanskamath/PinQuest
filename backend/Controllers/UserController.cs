@@ -58,7 +58,7 @@ namespace dotnetcorebackend.Controllers
             try
             {
                 var response = await _mediator.Send(command);
-                return Ok(new { success = response, message = "Password changed sucessfully!" });
+                return Ok(response);
             }
             catch (Exception ex)
             {

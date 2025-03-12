@@ -3,7 +3,7 @@ using MediatR;
 
 namespace dotnetcorebackend.Application.Services.Pinservice.Commands
 {
-    public class CreateNewPinCommand :IRequest<PinDTO>
+    public class CreateNewPinCommand :IRequest<object?>
     {
         public Guid UserId { get; set; }
         public required string Title { get; set; }
