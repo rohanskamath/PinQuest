@@ -4,11 +4,14 @@ import Grid from '@mui/material/Grid2';
 import bgImg from '../../assets/bg-image.jpg';
 import animationData from '../../assets/Login.json';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Lottie from 'lottie-react';
 import CustomTypography from '../../components/customFormControls/CustomTypography';
 import CustomTextField from '../../components/customFormControls/CustomTextField';
 import AttachEmailOutlinedIcon from '@mui/icons-material/AttachEmailOutlined';
 import EnhancedEncryptionOutlinedIcon from '@mui/icons-material/EnhancedEncryptionOutlined';
+import IconButton from '@mui/material/IconButton';
 import { useNavigate } from 'react-router-dom';
 import CustomStyledBox from '../../components/customComponents/CustomStyledBox';
 import CustomButton from '../../components/customFormControls/CustomButton';
@@ -19,6 +22,7 @@ import { retriveUserData } from '../../services/authService';
 
 const LoginPage = () => {
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
@@ -27,6 +31,10 @@ const LoginPage = () => {
 
   const [errors, setErrors] = useState({})
   const [snackbar, setSnackbar] = useState({ open: false, msg: '', severity: 'success' });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -141,14 +149,20 @@ const LoginPage = () => {
                       icon={<AttachEmailOutlinedIcon />} />
 
                     <CustomTextField
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       value={loginData.password}
                       onChange={(e) => handleInputChange("password", e.target.value)}
                       error={!!errors.password}
                       helperText={errors.password}
                       label={"Enter your password"}
                       sx={{ marginTop: "20px" }}
-                      icon={<EnhancedEncryptionOutlinedIcon />} />
+                      icon={<EnhancedEncryptionOutlinedIcon />}
+                      endIcon={
+                        <IconButton onClick={togglePasswordVisibility} edge="end" sx={{ fontSize: "10px" }}>
+                          {showPassword ? <VisibilityOffIcon sx={{ fontSize: 20 }}/> : <VisibilityIcon sx={{ fontSize: 20 }}/>}
+                        </IconButton>
+                      }
+                    />
 
                     <div
                       style={{

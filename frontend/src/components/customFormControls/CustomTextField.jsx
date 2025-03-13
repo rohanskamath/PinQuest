@@ -12,11 +12,12 @@ const CustomTextField = ({ label, endIcon, isPassword = false, error = false, he
       {...props}
       slotProps={{
         input: {
-          startAdornment: (
+          startAdornment: icon && (
             <InputAdornment position="start" sx={{ color: 'black' }}>
               {icon}
             </InputAdornment>
           ),
+          endAdornment: endIcon || <InputAdornment position="end"></InputAdornment>,
           sx: {
             color: "black",
             fontFamily: "'Merriweather', serif",
@@ -25,6 +26,10 @@ const CustomTextField = ({ label, endIcon, isPassword = false, error = false, he
         },
       }}
       sx={{
+        '& .MuiInputAdornment-positionEnd': {
+          fontSize:"10px",
+          width: "20px",
+        },
         '& .MuiInput-underline:before': {
           borderBottomColor: error ? 'red' : 'black',
 

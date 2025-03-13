@@ -5,6 +5,9 @@ import CustomStyledBox from '../../components/customComponents/CustomStyledBox';
 import CustomTextField from '../../components/customFormControls/CustomTextField';
 import Grid from '@mui/material/Grid2';
 import Lottie from 'lottie-react';
+import IconButton from '@mui/material/IconButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';
 import AttachEmailOutlinedIcon from '@mui/icons-material/AttachEmailOutlined';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -31,6 +34,8 @@ const ForgotPassword = () => {
   const [timer, setTimer] = useState(60);
   const otpRefs = useRef([]);
   const [snackbar, setSnackbar] = useState({ open: false, msg: '', severity: 'success' });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCPassword, setShowCPassword] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -71,8 +76,8 @@ const ForgotPassword = () => {
     updatedOtp[index] = value;
     setOtp(updatedOtp)
 
-    if(value && index <3){
-      otpRefs.current[index+1]?.focus();
+    if (value && index < 3) {
+      otpRefs.current[index + 1]?.focus();
     }
   }
 
@@ -98,6 +103,14 @@ const ForgotPassword = () => {
       setOtpError(true)
     }
   }
+
+  const togglePasswordVisibility = (field) => {
+    if (field === "password") {
+      setShowPassword((prev) => !prev);
+    } else if (field === "confirmPassword") {
+      setShowCPassword((prev) => !prev);
+    }
+  };
 
   useEffect(() => {
     let countdown;
@@ -144,9 +157,8 @@ const ForgotPassword = () => {
         email: email,
         newPassword: newpassword.password
       }
-      const res=await changePassword(data)
-      if(res.success)
-      {
+      const res = await changePassword(data)
+      if (res.success) {
         setSnackbar({ open: true, msg: res.message, severity: 'success' });
         setTimeout(() => navigate('/login'), 1500);
       } else {
@@ -268,16 +280,26 @@ const ForgotPassword = () => {
                         icon={<EnhancedEncryptionOutlinedIcon />}
                         label={'New Password'}
                         autoFocus
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         value={newpassword.password}
                         onChange={(e) => { setNewPassword({ ...newpassword, password: e.target.value }) }}
+                        endIcon={
+                          <IconButton onClick={() => togglePasswordVisibility("password")} edge="end">
+                            {showPassword ? <VisibilityOffIcon sx={{ fontSize: 20 }} /> : <VisibilityIcon sx={{ fontSize: 20 }} />}
+                          </IconButton>
+                        }
                       />
                       <CustomTextField
                         icon={<EnhancedEncryptionOutlinedIcon />}
                         label={'Confirm Password'}
-                        type="password"
+                        type={showCPassword ? "text" : "password"}
                         value={newpassword.confirmPassword}
                         onChange={(e) => { setNewPassword({ ...newpassword, confirmPassword: e.target.value }) }}
+                        endIcon={
+                          <IconButton onClick={() => togglePasswordVisibility("confirmPassword")} edge="end" sx={{ fontSize: "10px" }}>
+                            {showCPassword ? <VisibilityOffIcon sx={{ fontSize: 20 }} /> : <VisibilityIcon sx={{ fontSize: 20 }} />}
+                          </IconButton>
+                        }
                       />
                       <CustomButton onClick={handleChangePassword}>
                         Reset Password

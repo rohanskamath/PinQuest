@@ -5,6 +5,9 @@ import bgImg from '../../assets/bg-image.jpg';
 import animationData from '../../assets/Register.json';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import Lottie from 'lottie-react';
+import IconButton from '@mui/material/IconButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CustomTypography from '../../components/customFormControls/CustomTypography';
 import CustomTextField from '../../components/customFormControls/CustomTextField';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
@@ -25,6 +28,8 @@ const RegisterPage = () => {
     password: '',
     cpassword: ''
   })
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCPassword, setShowCPassword] = useState(false);
   const [errors, setErrors] = useState({})
   const [snackbar, setSnackbar] = useState({ open: false, msg: '', severity: 'success' });
 
@@ -87,6 +92,14 @@ const RegisterPage = () => {
       }
     }
   }
+
+  const togglePasswordVisibility = (field) => {
+    if (field === "password") {
+      setShowPassword((prev) => !prev);
+    } else if (field === "confirmPassword") {
+      setShowCPassword((prev) => !prev);
+    }
+  };  
 
   const handleLoginPage = () => {
     setIsAnimating(true);
@@ -168,9 +181,14 @@ const RegisterPage = () => {
                       onChange={(e) => handleInputChange("password", e.target.value)}
                       error={!!errors.password}
                       helperText={errors.password}
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       label="Enter your password"
                       icon={<EnhancedEncryptionOutlinedIcon />}
+                      endIcon={
+                        <IconButton onClick={() => togglePasswordVisibility("password")} edge="end">
+                          {showPassword ? <VisibilityOffIcon sx={{ fontSize: 20 }}/> : <VisibilityIcon sx={{ fontSize: 20 }}/>}
+                        </IconButton>
+                      }
                     />
 
                     <CustomTextField
@@ -178,9 +196,14 @@ const RegisterPage = () => {
                       onChange={(e) => handleInputChange("cpassword", e.target.value)}
                       error={!!errors.cpassword}
                       helperText={errors.cpassword}
-                      type="password"
+                      type={showCPassword ? "text" : "password"}
                       label="Confirm your password"
                       icon={<EnhancedEncryptionOutlinedIcon />}
+                      endIcon={
+                        <IconButton onClick={() => togglePasswordVisibility("confirmPassword")} edge="end" sx={{ fontSize: "10px" }}>
+                          {showCPassword ? <VisibilityOffIcon sx={{ fontSize: 20 }} /> : <VisibilityIcon sx={{ fontSize: 20 }} />}
+                        </IconButton>
+                      }
                     />
                   </Stack>
 

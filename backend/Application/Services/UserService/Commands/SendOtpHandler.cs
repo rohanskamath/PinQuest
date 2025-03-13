@@ -35,15 +35,30 @@ namespace dotnetcorebackend.Application.Services.UserService.Commands
 
                 // Send OTP to Users provided email
                 var htmlContent = $@"
-    <div style='font-family: Arial, sans-serif; padding: 20px;'>
-        <h2 style='color: #4CAF50;'>Your OTP Code</h2>
-        <p>Hello,</p>
-        <p>Your OTP for password reset is:</p>
-        <h3 style='background-color: #f3f4f6; padding: 10px; border-radius: 5px;'>{otp}</h3>
-        <p>This OTP is valid for 2 minutes.</p>
-        <p style='font-size: 12px; color: #888;'>If you didn't request this, please ignore this email.</p>
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>OTP Email Template</title>
+</head>
+<body>
+    <div style='font-family: Helvetica, Arial, sans-serif; min-width: 1000px; overflow: auto; line-height: 2;'>
+        <div style='margin: 50px auto; width: 70%; padding: 20px 0;'>
+            <div style='border-bottom: 1px solid #eee;'>
+                <a href='' style='font-size: 1.4em; color: #660033; text-decoration: none; font-weight: 600;'>PinQuest</a>
+            </div>
+            <p style='font-size: 1.1em;'>Hi,</p>
+            <p>Thank you for using PinQuest. <br/> Use the following OTP to complete your Password Recovery Procedure.<br /> OTP is valid for 2 minutes.</p>
+            <h2 style='background: #660033; margin: 0 auto; width: max-content; padding: 0 10px; color: #fff; border-radius: 4px;'>{otp}</h2>
+            <p style='font-size: 0.9em;'>Thanks & Regards,<br />PinQuest Team</p>
+            <hr style='border: none; border-top: 1px solid #eee;' />
+            <p style='font-size: 12px; color: #888;'>If you didn't request this, please ignore this email.</p>
+        </div>
     </div>
+</body>
+</html>
 ";
+
                 var result = await _emailService.SendEmailAsync(request.Email, "Your one-time OTP verifiation", htmlContent);
                 return new { success = result, message = "OTP sent successfully." };
 

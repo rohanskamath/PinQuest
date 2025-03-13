@@ -67,7 +67,7 @@ const CustomMapBox = ({ location }) => {
             const res = await getAllPins();
 
             // Grouping reviews for the same location and calculating the average
-            const groupedPins = res.data.reduce((review, pin) => {
+            const groupedPins = res.reduce((review, pin) => {
                 const key = `${pin.latitude},${pin.longitude}`;
                 if (!review[key]) {
                     review[key] = {
@@ -87,7 +87,6 @@ const CustomMapBox = ({ location }) => {
             }, {});
 
             setPins(Object.values(groupedPins));
-            setSnackbar({ open: true, msg: res.message, severity: 'success' });
         } catch (err) {
             setSnackbar({ open: true, msg: 'Unable to fetch pins', severity: 'error' });
             console.error("Unable to fetch pins:", err);
