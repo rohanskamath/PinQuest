@@ -9,6 +9,9 @@ axios.create = jest.fn(() => ({
     response: {
       use: jest.fn(),
     },
+    request: {
+      use: jest.fn(),
+    },
   },
   get: jest.fn(),
   post: jest.fn(),
