@@ -76,5 +76,18 @@ namespace backend.test.Services.test.PinService.test
             Assert.Equal("Pins fetched successfully!", result.GetType().GetProperty("message")?.GetValue(result) as string);
             Assert.Equal(pinDto, result.GetType().GetProperty("data")?.GetValue(result) as PinDTO);
         }
+
+        /// <summary>
+        /// TC002:- Test case should return error when pin creation fails
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task Handle_ShouldReturnErrorWhenPinCreationFails()
+        {
+            _mockPinsRepository.Setup(repo=>repo.CreateNewPinAsync(It.IsAny<Pin>())).ThrowsAsync(new Exception("Pin creation failed"));
+
+            var result=await Assert.ThrowsAsync<Exception>(() => _createNewPinHandler.Handle(_createNewPinCommand, CancellationToken.None));
+            Assert.Contains("An error occurred while processing your request", result.Message);
+        }
     }
 }
