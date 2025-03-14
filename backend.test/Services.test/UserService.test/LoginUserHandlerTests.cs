@@ -60,7 +60,6 @@ namespace backend.test.Services.test.UserService.test
             var resultType = result.GetType();
             Assert.False((bool)resultType.GetProperty("success").GetValue(result));
             Assert.Equal("User not found!.. Kindly register!", (string)resultType.GetProperty("message").GetValue(result));
-
         }
 
         /// <summary>
